@@ -11,4 +11,4 @@ export const userSchema = joi.object({
         userName: Joi.string(),
         termsAndCondition: Joi.boolean(),
     }
-})
+});
