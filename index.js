@@ -5,6 +5,7 @@ import expressOasGenerator from "express-oas-generator";
 import 'dotenv/config'
 import { dbConnection } from "./config/db.js";
 
+// create express app
 const app = express();
 
 
