@@ -1,18 +1,16 @@
 import Joi from "joi";
 
 export const userProfile_schema = Joi.object({
-    userProfile: Joi.object ({
+    userProfile: Joi.object({
         profilePicture: Joi.string(),
         location: Joi.string(),
-        maritalStatus: Joi.string().valid['single', 'married', 'prefer-not-to-say'],
-        sex: Joi.string().valid['male', 'female'],
+        maritalStatus: Joi.string().valid('single', 'married', 'prefer-not-to-say').required(),
+        sex: Joi.string().valid('male', 'female').required(),
         bio: Joi.string().required(),
         about: Joi.string().required(),
         dateOfBirth: Joi.date(),
         contact: Joi.string().required(),
         resume: Joi.string().required(),
         languages: Joi.array()
-
     })
-    
 });
