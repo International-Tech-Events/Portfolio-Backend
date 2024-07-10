@@ -1,6 +1,6 @@
 import {Schema, model} from "mongoose";
 
-const volunteringSchema = new Schema({
+const volunteeringSchema = new Schema({
             organization: { type: String },
             description: { type: String },
             skills: { type: String },
@@ -16,4 +16,4 @@ const volunteringSchema = new Schema({
     timestamps: true
 }); 
 
-export const volunteringModel = model('volunter', volunteringSchema);
+export const volunteeringModel = model('volunteer', volunteeringSchema);

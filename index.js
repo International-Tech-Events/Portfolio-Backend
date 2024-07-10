@@ -1,13 +1,17 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-// import expressOasGenerator from "express-oas-generator";
+import expressOasGenerator from "express-oas-generator";
 import 'dotenv/config';
 import { userRouter } from './routes/user_routes.js';
 import { dbConnection } from "./config/db.js";
 
 
 
+
+
+
+// create express app
 
 const app = express();
 

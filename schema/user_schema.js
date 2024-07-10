@@ -12,3 +12,4 @@ export const userSchema = Joi.object({
         termsAndCondition: Joi.boolean(),
     }
 });
+

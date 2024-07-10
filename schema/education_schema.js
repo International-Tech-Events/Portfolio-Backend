@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-export const experience_schema = Joi.object({
+export const educationSchema = Joi.object({
     experience: Joi.object ({
         schoolName: Joi.string().required(),
         location: Joi.string().required(),

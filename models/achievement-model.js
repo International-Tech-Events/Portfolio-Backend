@@ -14,5 +14,5 @@ const achievementSchema = new Schema({
     timestamps:true
 });
 
-export const achievementModel = model('achievemet', achievementSchema);
+export const achievementModel = model('achievement', achievementSchema);
 
