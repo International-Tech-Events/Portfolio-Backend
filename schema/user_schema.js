@@ -1,7 +1,7 @@
 import Joi from "joi";
 
-export const userSchema = joi.object({
-    user: {
+export const userSchema = Joi.object({
+    user: ({
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
         otherNmaes: Joi.string(),
@@ -10,5 +10,5 @@ export const userSchema = joi.object({
         confirmedPassword: Joi.ref('password'),
         userName: Joi.string(),
         termsAndCondition: Joi.boolean(),
-    }
-})
+    })
+});
