@@ -3,13 +3,13 @@ import { Schema, model } from "mongoose";
 const userSchema = new Schema({
     user: {
         firstName: { type: String },
-        lastName: { type: String },
-        otherNames: { type: String },
-        email: { type: String },
-        password: { type: String },
-        userName: { type: String, unique: true },
-        termsAndCondition: { type: Boolean },
-    },
+    lastName: { type: String },
+    otherNames: { type: String },
+    email: { type: String },
+    password: { type: String },
+    userName: { type: String, unique: true },
+    termsAndCondition: { type: Boolean },
+},
 
     userProfile: {
         profilePicture: { type: String },
@@ -56,7 +56,6 @@ const userSchema = new Schema({
             schoolName: { type: String },
             location: { type: String },
             program: { type: String },
-            image: {type: String},
             qualification: { type: String },
             grade: { type: String },
             startDate: { type: String },
@@ -92,7 +91,7 @@ const userSchema = new Schema({
         }
     ],
 
-    volunteering: [
+    voluntering: [
         {
             organization: { type: String },
             description: { type: String },
