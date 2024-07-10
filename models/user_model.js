@@ -56,6 +56,7 @@ const userSchema = new Schema({
             schoolName: { type: String },
             location: { type: String },
             program: { type: String },
+            image: {type: String},
             qualification: { type: String },
             grade: { type: String },
             startDate: { type: String },
@@ -91,7 +92,7 @@ const userSchema = new Schema({
         }
     ],
 
-    voluntering: [
+    volunteering: [
         {
             organization: { type: String },
             description: { type: String },
