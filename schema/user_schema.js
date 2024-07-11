@@ -1,7 +1,6 @@
 import Joi from "joi";
 
 export const userSchema = Joi.object({
-    user: {
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
         otherNmaes: Joi.string(),
@@ -11,5 +10,5 @@ export const userSchema = Joi.object({
         userName: Joi.string(),
         termsAndCondition: Joi.boolean(),
     }
-});
+);
 
