@@ -17,4 +17,4 @@ const projectSchema = new Schema({
     timestamps: true
 });
 
-export const ProjectModel = model('project', projectSchema);
+export const ProjectModel = model('Project', projectSchema);

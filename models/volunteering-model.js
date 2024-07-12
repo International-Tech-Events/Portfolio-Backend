@@ -10,10 +10,11 @@ const volunteeringSchema = new Schema({
             responsibility: { type: String },
             location: { type: String },
             projectName: { type: String },
+            user: {type: Types.ObjectId, ref: 'User'}
 
 
 },{
     timestamps: true
 }); 
 
-export const volunteeringModel = model('volunteer', volunteeringSchema);
+export const volunteeringModel = model('Volunteering', volunteeringSchema);
