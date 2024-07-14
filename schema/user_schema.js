@@ -6,7 +6,7 @@ export const userSchema = Joi.object({
         otherNames: Joi.string(),
         email: Joi.string().email().required(),
         password: Joi.string().min(4).required(),
-        // confirmPassword: Joi.ref('password').required(),
+        confirmPassword: Joi.ref('password'),
         termsAndConditions: Joi.boolean()
         
     }) .with('password', 'confirmPassword');

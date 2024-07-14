@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 
 const userSchema = new Schema({
     firstName: { type: String },
@@ -6,14 +6,15 @@ const userSchema = new Schema({
     otherNames: { type: String },
     email: { type: String, unique: true },
     password: { type: String },
+    userName: { type: String, unique:true },
     termsAndConditions: { type: Boolean },
-    education: [{ type: Schema.Types.ObjectId, ref: 'Education' }],
-    skill: [{ type: Schema.Types.ObjectId, ref: 'Skill' }],
-    achievement: [{ type: Schema.Types.ObjectId, ref: 'Achievement' }],
-    project: [{ type: Schema.Types.ObjectId, ref: 'Project' }],
-    userProfile: [{ type: Schema.Types.ObjectId, ref: 'UserProfile' }],
-    volunteering: [{ type: Schema.Types.ObjectId, ref: 'Volunteering' }],
-    experience: [{ type: Schema.Types.ObjectId, ref: 'Experience' }],
+    education: [{ type: Types.ObjectId, ref: 'Education' }],
+    skill: [{ type: Types.ObjectId, ref: 'Skill' }],
+    achievement: [{ type: Types.ObjectId, ref: 'Achievement' }],
+    project: [{ type: Types.ObjectId, ref: 'Project' }],
+    userProfile: [{ type: Types.ObjectId, ref: 'UserProfile' }],
+    volunteering: [{ type: Types.ObjectId, ref: 'Volunteering' }],
+    experience: [{ type: Types.ObjectId, ref: 'Experience' }],
 });
 
 
