@@ -1,16 +1,15 @@
 import Joi from "joi";
 
 export const projectSchema = Joi.object({
-    projects: Joi.object ({
-        projectName: Joi.string(),
-        description: Joi.string(),
+
+        projectName: Joi.string().required(),
+        description: Joi.string().required(),
         contributors: Joi.string(),
-        skills: Joi.string(),
-        link: Joi.string().uri(), 
-        nameOfInstitution: Joi.string(),
-        startDate: Joi.date(),
+        skills: Joi.string().required(),
+        link: Joi.string().uri().required(), 
+        nameOfInstitution: Joi.string().required(),
+        startDate: Joi.date().required(),
         endDate: Joi.date(), 
         user: Joi.string().required()
-    })
-
+        
     });

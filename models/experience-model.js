@@ -1,9 +1,9 @@
-import {Schema, model} from "mongoose";
+import {Schema, model, Types} from "mongoose";
 
 const experienceSchema = new Schema({
             companyName: { type: String },
             role: { type: String },
-            responsibility: { type: String },
+            responsibilities: { type: String },
             startDate: { type: String },
             endDate: { type: String },
             user:{type: Types.ObjectId, ref: 'User'}
@@ -14,4 +14,4 @@ const experienceSchema = new Schema({
     timestamps: true
 });
 
-export const experienceModel = model('experience', experienceSchema);
+export const experienceModel = model('Experience', experienceSchema);

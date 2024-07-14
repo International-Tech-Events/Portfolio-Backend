@@ -1,4 +1,4 @@
-import {Schema, model } from "mongoose";
+import {Schema, model, Types } from "mongoose";
 
 const educationSchema = new Schema({
     
@@ -17,4 +17,4 @@ const educationSchema = new Schema({
     timestamps: true
 });
 
-export const educationModel = model('education', educationSchema);
+export const educationModel = model('Education', educationSchema);

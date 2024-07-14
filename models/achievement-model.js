@@ -1,12 +1,12 @@
-import {Schema, model} from "mongoose";
+import {Schema, model, Types} from "mongoose";
 
 const achievementSchema = new Schema({
-            awards: { type: String },
+            awardName: { type: String },
             description: { type: String },
             image: { type: String },
             date: { type: String },
-            nameOfInstitution: { type: String },
-            user:{type: Types.ObjectId, ref: 'User'},
+            awardingInstitution: { type: String },
+            user:{type: Types.ObjectId, ref: 'User'}
 
 
 
@@ -14,5 +14,5 @@ const achievementSchema = new Schema({
     timestamps:true
 });
 
-export const achievementModel = model('achievement', achievementSchema);
+export const achievementModel = model('Achievement', achievementSchema);
 
