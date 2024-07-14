@@ -1,13 +1,20 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 
 const userSchema = new Schema({
     firstName: { type: String },
     lastName: { type: String },
     otherNames: { type: String },
-    email: { type: String },
+    email: { type: String, unique: true },
     password: { type: String },
-    userName: { type: String, unique: true },
-    termsAndCondition: { type: Boolean },
+    userName: { type: String, unique:true },
+    termsAndConditions: { type: Boolean },
+    education: [{ type: Types.ObjectId, ref: 'Education' }],
+    skill: [{ type: Types.ObjectId, ref: 'Skill' }],
+    achievement: [{ type: Types.ObjectId, ref: 'Achievement' }],
+    project: [{ type: Types.ObjectId, ref: 'Project' }],
+    userProfile: [{ type: Types.ObjectId, ref: 'UserProfile' }],
+    volunteering: [{ type: Types.ObjectId, ref: 'Volunteering' }],
+    experience: [{ type: Types.ObjectId, ref: 'Experience' }],
 });
 
 
