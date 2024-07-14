@@ -10,6 +10,7 @@ import { experienceRouter } from "./routes/experience_router.js";
 import { skillsRouter } from "./routes/skill_routes.js";
 import { volunteeringRouter } from "./routes/volunteering_route.js";
 import { dbConnection } from "./config/db.js";
+import session from "express-session";
 
 
 
@@ -25,6 +26,17 @@ dbConnection();
 
 app.use(cors());
 app.use(express.json());
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    // cookie: {secure: true},
+    // store: MongoStore.create({
+    //     mongoUrl: process.env.MONGO_URL
+    // })
+    
+
+}));
 
 app.use('/api/v1', userRouter);
 app.use('/api/v1', educationRouter);

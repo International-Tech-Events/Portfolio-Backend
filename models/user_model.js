@@ -16,6 +16,4 @@ const userSchema = new Schema({
     volunteering: [{ type: Types.ObjectId, ref: 'Volunteering' }],
     experience: [{ type: Types.ObjectId, ref: 'Experience' }],
 });
-
-
-export const User = model('User', userSchema);
+export const userModel = model("User", userSchema);
