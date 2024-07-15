@@ -22,13 +22,13 @@ const app = express();
 
 expressOasGenerator.handleResponses(app, {
     alwaysServeDocs: true,
-    tags: ['auth','userProfile', 'skills', 'projects', 'volunteering', 'experiences', 'education', 'achievements'],
+    tags: ['auth','userProfile', 'skill', 'project', 'volunteering', 'experience', 'education', 'achievement'],
     mongooseModels: mongoose.modelNames(), 
 })
 
 dbConnection();
 
-app.use(cors({credentials: true, origin: '*'}));
+app.use(cors({credentials: true, origin: 'http://localhost:8600'}));
 app.use(express.json());
 app.use(session({
     secret: process.env.SESSION_SECRET,
