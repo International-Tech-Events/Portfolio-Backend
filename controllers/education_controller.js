@@ -1,5 +1,5 @@
 import { educationModel } from "../models/education-model.js";
-import { User } from "../models/user_model.js";
+import { userModel } from "../models/user_model.js";
 import { educationSchema } from "../schema/education_schema.js";
 
 export const addEducation = async (req, res) => {
@@ -16,7 +16,7 @@ export const addEducation = async (req, res) => {
     //after, find the user with the id that you passed when creating the education 
     console.log('userId', req.session.user.id)
     const userSessionId = req.session.user.id
-    const user = await User.findById(userSessionId);
+    const user = await userModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send('User not found');
     }

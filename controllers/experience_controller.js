@@ -1,5 +1,5 @@
 import { experienceModel } from "../models/experience-model.js";
-import { User } from "../models/user_model.js";
+import { userModel } from "../models/user_model.js";
 import { experienceSchema } from "../schema/experience_schema.js";
 
 export const addExperience = async (req, res) => {
@@ -13,7 +13,7 @@ export const addExperience = async (req, res) => {
 
     console.log('userId', req.session.user.id)
     const userSessionId = req.session.user.id
-    const user = await User.findById(userSessionId);
+    const user = await userModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send('User not found');
     }
