@@ -25,34 +25,6 @@ export const signup = async (req, res) => {
 }
 
 
-// export const login = async (req, res, next ) => {
-//     try {
-//         const { email, password, phone } = req.body; 
-//         const user = await UserModel.findOne({
-//             $or: [
-//                 { email: email },
-//                 { phone: phone }
-//             ]
-//         });
-
-//         if (!user) {
-//             res.status(401).json('No user found');
-//         } else {
-//             const correctPassword = await bcrypt.compare(password, user.password); // Changed to use async bcrypt.compare
-//             if (!correctPassword) {
-//                 res.status(401).json('Invalid credentials'); // Changed status code to 401 for invalid credentials
-//             } else {
-//                 req.session.user = { id: user.id }; // Corrected the session variable
-//                 res.status(200).json('Login successful');
-//             }
-//         }
-//     } catch (error) {
-//         next(error);
-//     }
-// }
-
-   
-
 // Login user
 export const login = async (req, res, next) => {
     try {

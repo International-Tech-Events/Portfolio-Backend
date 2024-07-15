@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { checkUserSession } from "../middlewares/auth.js";
 
-import { addVolunteering, deleteVolunteering, getAllUserVolunteering, getUserVolunteering, updateVolunteering } from "../controllers/volunteering_controller.js";
+import { addVolunteering, deleteVolunteering, getAllUserVolunteering, updateVolunteering } from "../controllers/volunteering_controller.js";
 
 export const volunteeringRouter = Router()
 
@@ -13,5 +13,3 @@ volunteeringRouter.get('/user/volunteering', checkUserSession, getAllUserVolunte
 volunteeringRouter.patch('/user/volunteering/:volunteeringId', checkUserSession, updateVolunteering)
 
 volunteeringRouter.delete('/user/volunteering/:volunteeringId', checkUserSession, deleteVolunteering)
-
-volunteeringRouter.get('/user/volunteering/:volunteeringId', checkUserSession, getUserVolunteering)
