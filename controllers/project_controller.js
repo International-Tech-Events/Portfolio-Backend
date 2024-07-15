@@ -1,8 +1,8 @@
-import { projectSchema } from "../schema/user_schema.js";
+import { projectSchema } from "../schema/project_schema.js";
 import { userModel} from "../models/user_model.js";
-import { ProjectModel } from "../models/project_model.js";
+import { ProjectModel } from "../models/project-model.js";
 
-export const createUserProject = async (req, res) => {
+export const postProject = async (req, res) => {
   try {
     const { error, value } = projectSchema.validate({...req.body, image:req.file.filename});
 
@@ -31,7 +31,7 @@ export const createUserProject = async (req, res) => {
 
 
 
-export const getAllUserProjects = async (req, res) => {
+export const getAllProjects = async (req, res) => {
   try {
     //we are fetching Project that belongs to a particular user
     const userSessionId = req.session.user.id
@@ -47,7 +47,7 @@ export const getAllUserProjects = async (req, res) => {
 
 
 
-export const updateUserProject = async (req, res) => {
+export const updateProject = async (req, res) => {
     try {
       const { error, value } = projectSchema.validate({...req.body, image:req.file.filename});
 
@@ -74,7 +74,7 @@ export const updateUserProject = async (req, res) => {
   };
 
 
-  export const deleteUserProject = async (req, res) => {
+  export const deleteProject = async (req, res) => {
     try {
      
   

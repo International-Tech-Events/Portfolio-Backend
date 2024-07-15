@@ -28,7 +28,7 @@ expressOasGenerator.handleResponses(app, {
 
 dbConnection();
 
-app.use(cors());
+app.use(cors({credentials: true, origin: '*'}));
 app.use(express.json());
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -63,9 +63,6 @@ app.use((req, res) => res.redirect('/api-docs/'));
 
 
 const port = process.env.PORT || 8600;
-app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
-});
 
 
 
@@ -73,16 +70,16 @@ const reboot = async () => {
     setInterval(restartServer, process.env.INTERVAL)
     }
     
-//     dbConnection()
-//       .then(() => {
-//         app.listen(PORT, () => {
-//             reboot().then(() => {
-//             console.log(`Server Restarted`);
-//           });
-//           console.log(`Server is connected to Port ${PORT}`);
-//         });
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//         process.exit(-1);
-    //   });
+    dbConnection()
+      .then(() => {
+        app.listen(port, () => {
+            reboot().then(() => {
+            console.log(`Server Restarted`);
+          });
+          console.log(`Server is connected to Port ${port}`);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        process.exit(-1);
+      });
