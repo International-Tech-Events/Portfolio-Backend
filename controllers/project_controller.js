@@ -1,128 +1,99 @@
-// import { ProjectModel } from "../models/project-model";
+import { projectSchema } from "../schema/user_schema.js";
+import { userModel} from "../models/user_model.js";
+import { ProjectModel } from "../models/project_model.js";
 
-// export const postProject = async (req, res, next) => {
-//     try {
-//         const newProject = await ProjectModel.create(req.body);
-//         res.status(201).json(newProject);
-//     } catch (error) {
-//         next(error);
-//     }
-// };
+export const createUserProject = async (req, res) => {
+  try {
+    const { error, value } = projectSchema.validate({...req.body, image:req.file.filename});
 
-// // Get all projects
-// export const getProjects = async (req, res, next) => {
-//     try {
-//         const projects = await projects.find();
-//         res.status(200).json(projects);
-//     } catch (error) {
-//         next(error);
-//     }
-// };
-
-// // Get a project by ID
-// export const getProjectById = async (req, res, next) => {
-//     try {
-//         const project = await project.findById(req.params.id);
-//         if (!project) {
-//             return res.status(404).json({ message: 'Project not found' });
-//         }
-//         res.status(200).json(project);
-//     } catch (error) {
-//         next(error);
-//     }
-// };
-
-// // Update a project by ID
-// export const updateProject = async (req, res, next) => {
-//     try {
-//         const updatedProject = await Project.findByIdAndUpdate(
-//             req.params.id,
-//             req.body,
-//             { new: true, runValidators: true }
-//         );
-//         if (!updatedProject) {
-//             return res.status(404).json({ message: 'Project not found' });
-//         }
-//         res.status(200).json(updatedProject);
-//     } catch (error) {
-//         next(error);
-//     }
-// };
-
-// // Delete a project by ID
-// export const deleteProject = async (req, res, next) => {
-//     try {
-//         const project = await project.findByIdAndDelete(req.params.id);
-//         if (!project) {
-//             return res.status(404).json({ message: 'Project not found' });
-//         }
-//         res.status(200).json({ message: 'Project deleted' });
-//     } catch (error) {
-//         next(error);
-//     }
-// };
-
-import { ProjectModel } from '../models/project-model';
-
-// Create a new project
-export const postProject = async (req, res, next) => {
-    try {
-        const newProject = await ProjectModel.create(req.body);
-        res.status(201).json(newProject);
-    } catch (error) {
-        next(error);
+    if (error) {
+      return res.status(400).send(error.details[0].message);
     }
+
+    const userSessionId = req.session.user.id;
+   
+    const user = await userModel.findById(userSessionId);
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    const project = await ProjectModel.create({ ...value, user: userSessionId });
+
+    user.projects.push(project._id)
+
+    await user.save();
+
+    res.status(201).json({ project });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-// Get all projects
-export const getProjects = async (req, res, next) => {
-    try {
-        const projects = await ProjectModel.find();
-        res.status(200).json(projects);
-    } catch (error) {
-        next(error);
+
+
+export const getAllUserProjects = async (req, res) => {
+  try {
+    //we are fetching Project that belongs to a particular user
+    const userSessionId = req.session.user.id
+    const allProject = await Project.find({ user: userSessionId });
+    if (allProject.length == 0) {
+      return res.status(404).send("No Project added");
     }
+    res.status(200).json({ Projects: allProject });
+  } catch (error) {
+    return res.status(500).json({error})
+  }
 };
 
-// Get a project by ID
-export const getProjectById = async (req, res, next) => {
+
+
+export const updateUserProject = async (req, res) => {
     try {
-        const project = await ProjectModel.findById(req.params.id);
+      const { error, value } = projectSchema.validate({...req.body, image:req.file.filename});
+
+  
+      if (error) {
+        return res.status(400).send(error.details[0].message);
+      }
+  
+      const userSessionId = req.session.user.id; 
+      const user = await userModel.findById(userSessionId);
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+  
+      const project = await ProjectModel.findByIdAndUpdate(req.params.id, value, { new: true });
         if (!project) {
-            return res.status(404).json({ message: 'Project not found' });
+            return res.status(404).send("Project not found");
         }
-        res.status(200).json(project);
+  
+      res.status(200).json({ project });
     } catch (error) {
-        next(error);
+      return res.status(500).json({error})
     }
-};
+  };
 
-// Update a project by ID
-export const updateProject = async (req, res, next) => {
-    try {
-        const updatedProject = await ProjectModel.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true, runValidators: true }
-        );
-        if (!updatedProject) {
-            return res.status(404).json({ message: 'Project not found' });
-        }
-        res.status(200).json(updatedProject);
-    } catch (error) {
-        next(error);
-    }
-};
 
-// Delete a project by ID
-export const deleteProject = async (req, res, next) => {
+  export const deleteUserProject = async (req, res) => {
     try {
-        const project = await ProjectModel.findByIdAndDelete(req.params.id);
+     
+  
+      const userSessionId = req.session.user.id; 
+      const user = await userModel.findById(userSessionId);
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+  
+      const project = await ProjectModel.findByIdAndDelete(req.params.id);
         if (!project) {
-            return res.status(404).json({ message: 'Project not found' });
+            return res.status(404).send("Project not found");
         }
-        res.status(200).json({ message: 'Project deleted' });
+  
+        user.ProjectModel.pull(req.params.id);
+        await user.save();
+      res.status(200).json("Project deleted");
     } catch (error) {
-        next(error);
+      return res.status(500).json({error})
     }
-};
+  };
+  
