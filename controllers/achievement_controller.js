@@ -1,5 +1,5 @@
 import { achievementModel } from "../models/achievement-model.js";
-import { User } from "../models/user_model.js";
+import { userModel } from "../models/user_model.js";
 import { achievementSchema } from "../schema/achievement_schema.js";
 
 export const addAchievement = async (req, res) => {
@@ -14,7 +14,7 @@ export const addAchievement = async (req, res) => {
 
     console.log('userId', req.session.user.id)
     const userSessionId = req.session.user.id
-    const user = await User.findById(userSessionId);
+    const user = await userModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send('User not found');
     }

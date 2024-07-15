@@ -1,7 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import expressOasGenerator from "express-oas-generator";
+import expressOasGenerator from "@mickeymond/express-oas-generator";
+import MongoStore from "connect-mongo";
 import 'dotenv/config';
 import { userRouter } from './routes/user_routes.js';
 import { educationRouter } from "./routes/education_routes.js";
@@ -31,9 +32,9 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     // cookie: {secure: true},
-    // store: MongoStore.create({
-    //     mongoUrl: process.env.MONGO_URL
-    // })
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URL
+    })
     
 
 }));
