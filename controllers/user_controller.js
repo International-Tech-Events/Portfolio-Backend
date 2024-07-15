@@ -58,20 +58,20 @@ export const login = async (req, res, next) => {
      const userName = req.params.userName.toLowerCase();
  
    const options = { sort: { startDate: -1 } }
-   const userDetails = await User.findOne({ userName })
+   const userDetails = await userModel.findOne({ userName }).select("-password")
      .populate({
        path: "education",
        options,
      })
      .populate("userProfile")
-     .populate("skills")
+     .populate("skill")
  
      .populate({
-       path: "achievements",
+       path: "achievement",
        options: { sort: { date: -1 } }, 
      })
      .populate({
-       path: "experiences",
+       path: "experience",
        options, 
      })
      .populate({
@@ -79,13 +79,13 @@ export const login = async (req, res, next) => {
        options, 
      })
      .populate({
-         path: 'projects',
+         path: 'project',
          options 
      });
  
    return res.status(200).json({ user: userDetails });
    } catch (error) {
-     next()
+     console.log(error);
    }
  };
  
