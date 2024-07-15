@@ -1,10 +1,10 @@
-import { projectSchema } from "../schema/user_schema.js";
-import { userModel} from "../models/user_model.js";
-import { ProjectModel } from "../models/project_model.js";
 
-export const createUserProject = async (req, res) => {
+import { userModel} from "../models/user_model.js";
+import { ProjectModel } from "../models/project-model.js";
+
+export const createProject = async (req, res) => {
   try {
-    const { error, value } = projectSchema.validate({...req.body, image:req.file.filename});
+    const { error, value } = projectSchema.validate({...req.body});
 
     if (error) {
       return res.status(400).send(error.details[0].message);
@@ -19,7 +19,7 @@ export const createUserProject = async (req, res) => {
 
     const project = await ProjectModel.create({ ...value, user: userSessionId });
 
-    user.projects.push(project._id)
+    user.ProjectModel.push(project._id)
 
     await user.save();
 
@@ -31,7 +31,7 @@ export const createUserProject = async (req, res) => {
 
 
 
-export const getAllUserProjects = async (req, res) => {
+export const getAllProjects = async (req, res) => {
   try {
     //we are fetching Project that belongs to a particular user
     const userSessionId = req.session.user.id
@@ -47,9 +47,9 @@ export const getAllUserProjects = async (req, res) => {
 
 
 
-export const updateUserProject = async (req, res) => {
+export const updateProject = async (req, res) => {
     try {
-      const { error, value } = projectSchema.validate({...req.body, image:req.file.filename});
+      const { error, value } = projectSchema.validate({...req.body});
 
   
       if (error) {
@@ -74,7 +74,7 @@ export const updateUserProject = async (req, res) => {
   };
 
 
-  export const deleteUserProject = async (req, res) => {
+  export const deleteProject = async (req, res) => {
     try {
      
   
@@ -96,4 +96,7 @@ export const updateUserProject = async (req, res) => {
       return res.status(500).json({error})
     }
   };
+
+
+
   
