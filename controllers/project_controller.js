@@ -1,10 +1,11 @@
+
 import { projectSchema } from "../schema/project_schema.js";
 import { userModel} from "../models/user_model.js";
 import { ProjectModel } from "../models/project-model.js";
 
-export const postProject = async (req, res) => {
+export const createProject = async (req, res) => {
   try {
-    const { error, value } = projectSchema.validate({...req.body, image:req.file.filename});
+    const { error, value } = projectSchema.validate({...req.body});
 
     if (error) {
       return res.status(400).send(error.details[0].message);
@@ -19,7 +20,7 @@ export const postProject = async (req, res) => {
 
     const project = await ProjectModel.create({ ...value, user: userSessionId });
 
-    user.projects.push(project._id)
+    user.ProjectModel.push(project._id)
 
     await user.save();
 
@@ -49,7 +50,7 @@ export const getAllProjects = async (req, res) => {
 
 export const updateProject = async (req, res) => {
     try {
-      const { error, value } = projectSchema.validate({...req.body, image:req.file.filename});
+      const { error, value } = projectSchema.validate({...req.body});
 
   
       if (error) {
@@ -96,4 +97,7 @@ export const updateProject = async (req, res) => {
       return res.status(500).json({error})
     }
   };
+
+
+
   
