@@ -14,6 +14,7 @@ import cors from "cors";
 import { restartServer } from "./restart_server.js";
 import expressOasGenerator from '@mickeymond/express-oas-generator'
 import mongoose from "mongoose";
+import { userProfileRouter } from "./routes/user-profile-route.js";
 
 // create express app
 
@@ -55,6 +56,8 @@ app.use('/api/v1', skillsRouter);
 app.use('/api/v1', educationRouter);
 app.use('/api/v1', volunteeringRouter);
 app.use('/api/v1', projectRouter);
+app.use('/api/v1', userProfileRouter);
+
 
 
 
