@@ -52,3 +52,72 @@ export const login = async (req, res, next) => {
        next(error)
     }
  }
+
+
+ export const getUser = async (req, res, next) => {
+   try {
+     const userName = req.params.userName.toLowerCase();
+ 
+   const options = { sort: { startDate: -1 } }
+   const userDetails = await User.findOne({ userName })
+     .populate({
+       path: "education",
+       options,
+     })
+     .populate("userProfile")
+     .populate("skills")
+ 
+     .populate({
+       path: "achievements",
+       options: { sort: { date: -1 } }, 
+     })
+     .populate({
+       path: "experiences",
+       options, 
+     })
+     .populate({
+       path: "volunteering",
+       options, 
+     })
+     .populate({
+         path: 'projects',
+         options 
+     });
+ 
+   return res.status(200).json({ user: userDetails });
+   } catch (error) {
+     next()
+   }
+ };
+ 
+ export const getUsers = async (req, res) => {
+  
+ 
+   const email = req.query.email?.toLowerCase()
+   const userName = req.query.userName?.toLowerCase();
+ 
+   const filter = {};
+   if (email) {
+     filter.email = email;
+   }
+   if (userName) {
+     filter.userName = userName;
+   }
+ 
+   const users = await User.find(filter);
+ 
+   return res.status(200).json({ users });
+ };
+ 
+ 
+ 
+ export const logout = async (req, res, next) => {
+   try {
+     // Destroy user session
+     await req.session.destroy();
+     // Return response
+     res.status(200).json("User logged out");
+   } catch (error) {
+     next(error);
+   }
+ };
