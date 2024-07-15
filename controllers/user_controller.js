@@ -24,7 +24,6 @@ export const signup = async (req, res) => {
     }
 }
 
-   
 
 // Login user
 export const login = async (req, res, next) => {

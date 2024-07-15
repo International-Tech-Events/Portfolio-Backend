@@ -1,4 +1,5 @@
 
+import { projectSchema } from "../schema/project_schema.js";
 import { userModel} from "../models/user_model.js";
 import { ProjectModel } from "../models/project-model.js";
 

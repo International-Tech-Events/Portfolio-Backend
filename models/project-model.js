@@ -9,7 +9,7 @@ const projectSchema = new Schema({
     nameOfInstitution: { type: String },
     startDate: { type: Date }, 
     endDate: { type: Date }, 
-    user: { type: Types.ObjectId, ref: 'User', required: true },
+    user: { type: Types.ObjectId, ref: 'User', select:false },
 }, {
     timestamps: true
 });
