@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { userModel} from "../models/user_model.js";
-import { userSchema,} from "../schema/user_schema.js";
+import { userSchema} from "../schema/user_schema.js";
 
 
 
