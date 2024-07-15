@@ -1,5 +1,6 @@
 import { userProfileModel } from "../models/userProfile-model.js";
 import { userProfileSchema } from "../schema/userProfile_schema.js";
+import {userModel} from "../models/user_model.js"
 
 
 // Create a new user profile

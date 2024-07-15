@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
-import { User } from "../models/user_model.js";
-import { userSchema,} from "../schema/user_schema.js";
+import { userModel } from "../models/user_model.js";
+import { userSchema} from "../schema/user_schema.js";
 
 
 
@@ -13,7 +13,7 @@ export const signup = async (req, res) => {
     const email = value.email
     console.log('email', email)
     
-    const findIfUserExist = await User.findOne({email:email})
+    const findIfUserExist = await userModel.findOne({email:email})
     if (findIfUserExist){
         return res.status(401).send('user has already signed up')
     } else{
@@ -58,7 +58,7 @@ export const login = async (req, res, next) => {
     try {
        const { userName, email, password } = req.body;
        //  Find a user using their email or username
-       const user = await User.findOne(
+       const user = await userModel.findOne(
           { $or: [{ email: email }, { userName: userName }] }
        );
        if (!user) {

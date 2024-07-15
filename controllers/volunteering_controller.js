@@ -1,5 +1,5 @@
 import { volunteeringModel } from "../models/volunteering-model.js"
-import { User } from "../models/user_model.js";
+import { userModel } from "../models/user_model.js";
 import {   volunteeringSchema } from "../schema/volunteering_schema.js";
 
 export const addVolunteering = async (req, res) => {
@@ -14,7 +14,7 @@ export const addVolunteering = async (req, res) => {
 
     console.log('userId', req.session.user.id)
     const userSessionId = req.session.user.id
-    const user = await User.findById(userSessionId);
+    const user = await userModel.findById(userSessionId);
     
     if (!user) {
       return res.status(404).send('User not found');
