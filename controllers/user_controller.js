@@ -19,7 +19,7 @@ export const signup = async (req, res) => {
     } else{
         const hashedPassword = await bcrypt.hash(value.password,12)
         value.password = hashedPassword
-        const addUser = await User.create(value)
+        const addUser = await userModel.create(value)
         return res.status(201).send(addUser)
     }
 }
