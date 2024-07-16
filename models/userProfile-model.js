@@ -6,7 +6,6 @@ const userProfileSchema = new Schema({
         location: { type: String },
         maritalStatus: { type: String, enum: ['single', 'married', 'prefer-not-to-say'] },
         sex: { type: String, enum: ['male', 'female'] },
-        bio: { type: String },
         about: { type: String },
         dateOfBirth: { type: Date },
         contact: { type: String },
@@ -17,8 +16,6 @@ const userProfileSchema = new Schema({
         twitter: { type: String },
         user:{type: Types.ObjectId, ref: 'User'}
 
-
-    
 },{
     timestamps:true
 })

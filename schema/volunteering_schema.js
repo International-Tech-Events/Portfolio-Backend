@@ -8,7 +8,7 @@ export const volunteeringSchema = Joi.object({
         startDate: Joi.date().required(),
         endDate: Joi.date(),    
         role: Joi.string().required(),
-        responsibility: Joi.string().required(),
+        responsibilities: Joi.string().required(),
         location: Joi.string(),
         projectName: Joi.string().required(),
         user: Joi.string().required()
