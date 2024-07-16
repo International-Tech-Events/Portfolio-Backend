@@ -5,14 +5,14 @@ import { achievementSchema } from "../schema/achievement_schema.js";
 export const addAchievement = async (req, res) => {
 
   try {
-    const { error, value } = achievementSchema.validate({ 
+    const { error, value } = achievementSchema.validate({
       ...req.body,
       image: req.file.filename
-     });
+    });
     if (error) {
       return res.status(400).send(error.details[0].message)
     }
-    const userSessionId = req.session.user.id
+    const userSessionId = req.session?.user?.id || req?.user?.id;
 
     const user = await userModel.findById(userSessionId);
     if (!user) {
@@ -20,7 +20,7 @@ export const addAchievement = async (req, res) => {
     }
 
     const achievement = await achievementModel.create({ ...value, user: userSessionId });
-    
+
     user.achievement.push(achievement._id);
 
     await user.save();
@@ -38,7 +38,7 @@ export const addAchievement = async (req, res) => {
 export const getAllUserAchievement = async (req, res) => {
 
   try {
-    const userSessionId = req.session.user.id
+    const userSessionId = req.session?.user?.id || req?.user?.id;
     const allachievements = await achievementModel.find({ user: userSessionId })
     if (allachievements.length == 0) {
       return res.status(404).send('No Achievement Added')
@@ -60,7 +60,7 @@ export const updateAchievement = async (req, res) => {
       return res.status(400).send(error.details[0].message);
     }
 
-    const userSessionId = req.session.user.id;
+    const userSessionId = req.session?.user?.id || req?.user?.id;
     const user = await userModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send("User not found");
@@ -81,7 +81,7 @@ export const updateAchievement = async (req, res) => {
 //   Delete Achievement
 export const deleteAchievement = async (req, res) => {
   try {
-    const userSessionId = req.session.user.id;
+    const userSessionId = req.session?.user?.id || req?.user?.id;
     const user = await userModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send("User not found");

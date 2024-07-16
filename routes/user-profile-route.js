@@ -24,7 +24,7 @@ userProfileRouter.post(
       updateUserProfile
     );
 
-    userProfileRouter.get('/users/userProfile', getUserProfile);
+    userProfileRouter.get('/users/userProfile', checkUserSession, getUserProfile);
   
 
 
