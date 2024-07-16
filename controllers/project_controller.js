@@ -11,8 +11,7 @@ export const createProject = async (req, res) => {
       return res.status(400).send(error.details[0].message);
     }
 
-    const userSessionId = req.session.user.id;
-   
+    const userSessionId = req.session?.user?.id || req?.user?.id;   
     const user = await userModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send("User not found");
@@ -35,7 +34,7 @@ export const createProject = async (req, res) => {
 export const getAllProjects = async (req, res) => {
   try {
     //we are fetching Project that belongs to a particular user
-    const userSessionId = req.session.user.id
+    const userSessionId = req.session?.user?.id || req?.user?.id;    
     const allProject = await ProjectModel.find({ user: userSessionId });
     if (allProject.length == 0) {
       return res.status(404).send("No Project added");
@@ -57,7 +56,7 @@ export const updateProject = async (req, res) => {
         return res.status(400).send(error.details[0].message);
       }
   
-      const userSessionId = req.session.user.id; 
+      const userSessionId = req.session?.user?.id || req?.user?.id;      
       const user = await userModel.findById(userSessionId);
       if (!user) {
         return res.status(404).send("User not found");
@@ -79,7 +78,7 @@ export const updateProject = async (req, res) => {
     try {
      
   
-      const userSessionId = req.session.user.id; 
+      const userSessionId = req.session?.user?.id || req?.user?.id;      
       const user = await userModel.findById(userSessionId);
       if (!user) {
         return res.status(404).send("User not found");

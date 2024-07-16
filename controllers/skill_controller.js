@@ -5,14 +5,13 @@ import { skillSchema } from "../schema/skill_schema.js";
 export const addSkill = async (req, res) => {
 
   try {
-    const { error, value } = skillSchema.validate({...req.body})
+    const { error, value } = skillSchema.validate({ ...req.body })
     if (error) {
       return res.status(400).send(error.details[0].message)
     }
 
-const userSessionId = req.session.user.id
-
-const user = await userModel.findById(userSessionId);
+    const userSessionId = req.session?.user?.id || req?.user?.id;
+    const user = await userModel.findById(userSessionId);
 
     if (!user) {
       return res.status(404).send('User not found');
@@ -37,7 +36,7 @@ const user = await userModel.findById(userSessionId);
 export const getAllUserSkills = async (req, res) => {
 
   try {
-    const userSessionId = req.session.user.id
+    const userSessionId = req.session?.user?.id || req?.user?.id;
     const allskill = await skillModel.find({ user: userSessionId })
 
     if (allskill.length == 0) {
@@ -56,49 +55,49 @@ export const getAllUserSkills = async (req, res) => {
 // Update Skills
 export const updateSkill = async (req, res) => {
   try {
-    const { error, value } = skillSchema.validate({...req.body});
+    const { error, value } = skillSchema.validate({ ...req.body });
 
-  
-      if (error) {
-        return res.status(400).send(error.details[0].message);
-      }
-  
-      const userSessionId = req.session.user.id; 
-      const user = await userModel.findById(userSessionId);
-      if (!user) {
-        return res.status(404).send("User not found");
-      }
-  
-      const skill = await skillModel.findByIdAndUpdate(req.params.id, value, { new: true });
-        if (!skill) {
-            return res.status(404).send("Skill not found");
-        }
-  
-      res.status(200).json({ skill });
-    } catch (error) {
-      return res.status(500).json({error})
+
+    if (error) {
+      return res.status(400).send(error.details[0].message);
     }
-  };
+
+    const userSessionId = req.session?.user?.id || req?.user?.id;
+    const user = await userModel.findById(userSessionId);
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    const skill = await skillModel.findByIdAndUpdate(req.params.id, value, { new: true });
+    if (!skill) {
+      return res.status(404).send("Skill not found");
+    }
+
+    res.status(200).json({ skill });
+  } catch (error) {
+    return res.status(500).json({ error })
+  }
+};
 
 
 //   Delete Skills
 export const deleteSkill = async (req, res) => {
   try {
-    const userSessionId = req.session.user.id; 
-      const user = await userModel.findById(userSessionId);
-      if (!user) {
-        return res.status(404).send("User not found");
-      }
-  
-      const skill = await skillModel.findByIdAndDelete(req.params.id);
-        if (!skill) {
-            return res.status(404).send("Skill not found");
-        }
-  
-        user.skill.pull(req.params.id);
-        await user.save();
-      res.status(200).json("Skill deleted");
-    } catch (error) {
-      return res.status(500).json({error})
+    const userSessionId = req.session?.user?.id || req?.user?.id;
+    const user = await userModel.findById(userSessionId);
+    if (!user) {
+      return res.status(404).send("User not found");
     }
-  };
+
+    const skill = await skillModel.findByIdAndDelete(req.params.id);
+    if (!skill) {
+      return res.status(404).send("Skill not found");
+    }
+
+    user.skill.pull(req.params.id);
+    await user.save();
+    res.status(200).json("Skill deleted");
+  } catch (error) {
+    return res.status(500).json({ error })
+  }
+};

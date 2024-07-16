@@ -10,8 +10,7 @@ export const addExperience = async (req, res) => {
       return res.status(400).send(error.details[0].message)
     }
 
-    const userSessionId = req.session.user.id
-
+    const userSessionId = req.session?.user?.id || req?.user?.id;
     const user = await userModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send('User not found');
@@ -36,7 +35,7 @@ export const addExperience = async (req, res) => {
 export const getAllUserExperience = async (req, res) => {
 
   try {
-    const userSessionId = req.session.user.id
+    const userSessionId = req.session?.user?.id || req?.user?.id;    
     const allexperience = await experienceModel.find({ user: userSessionId })
 
     if (allexperience.length == 0) {
@@ -59,7 +58,7 @@ export const updateExperience = async (req, res) => {
       return res.status(400).send(error.details[0].message);
     }
 
-    const userSessionId = req.session.user.id;
+    const userSessionId = req.session?.user?.id || req?.user?.id;    
     const user = await userModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send("User not found");
@@ -81,7 +80,7 @@ export const updateExperience = async (req, res) => {
 //   Delete experience
 export const deleteExperience = async (req, res) => {
   try {
-    const userSessionId = req.session.user.id;
+    const userSessionId = req.session?.user?.id || req?.user?.id;    
     const user = await userModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send("User not found");
