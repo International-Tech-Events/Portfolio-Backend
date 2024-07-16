@@ -1,10 +1,10 @@
 import { Schema, model, Types} from "mongoose";
 
 const userProfileSchema = new Schema({
-    userProfile: {
+    
         profilePicture: { type: String },
         location: { type: String },
-        martalStatus: { type: String, enum: ['single', 'married', 'prefer-not-to-say'] },
+        maritalStatus: { type: String, enum: ['single', 'married', 'prefer-not-to-say'] },
         sex: { type: String, enum: ['male', 'female'] },
         bio: { type: String },
         about: { type: String },
@@ -18,7 +18,9 @@ const userProfileSchema = new Schema({
         user:{type: Types.ObjectId, ref: 'User'}
 
 
-    },
+    
+},{
+    timestamps:true
 })
 
 export const userProfileModel = model('UserProfile', userProfileSchema);

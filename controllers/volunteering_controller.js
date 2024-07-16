@@ -5,7 +5,7 @@ import { volunteeringSchema } from "../schema/volunteering_schema.js";
 export const addVolunteering = async (req, res) => {
 
    try {
-    const { error, value } = volunteeringSchema.validate(req.body);
+    const { error, value } = volunteeringSchema.validate({...req.body});
 
     if (error) {
       return res.status(400).send(error.details[0].message);
@@ -53,7 +53,7 @@ export const getAllUserVolunteering = async (req, res) => {
   // Update Volunteering
   export const updateVolunteering = async (req, res) => {
     try {
-      const { error, value } = volunteeringSchema.validate(req.body);
+      const { error, value } = volunteeringSchema.validate({...req.body});
 
     if (error) {
       return res.status(400).send(error.details[0].message);

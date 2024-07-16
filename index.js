@@ -14,6 +14,7 @@ import cors from "cors";
 import { restartServer } from "./restart_server.js";
 import expressOasGenerator from '@mickeymond/express-oas-generator'
 import mongoose from "mongoose";
+import { userProfileRouter } from "./routes/user-profile-route.js";
 
 // create express app
 
@@ -22,7 +23,7 @@ const app = express();
 
 expressOasGenerator.handleResponses(app, {
     alwaysServeDocs: true,
-    tags: ['auth','userProfile', 'skills', 'projects', 'volunteering', 'experiences', 'education', 'achievements'],
+    tags: ['auth','userProfile', 'skill', 'project', 'volunteering', 'experience', 'education', 'achievement'],
     mongooseModels: mongoose.modelNames(), 
 })
 
@@ -52,9 +53,10 @@ app.use('/api/v1', educationRouter);
 app.use('/api/v1', achievementRouter);
 app.use('/api/v1', experienceRouter);
 app.use('/api/v1', skillsRouter);
-app.use('/api/v1', educationRouter);
 app.use('/api/v1', volunteeringRouter);
 app.use('/api/v1', projectRouter);
+app.use('/api/v1', userProfileRouter);
+
 
 
 

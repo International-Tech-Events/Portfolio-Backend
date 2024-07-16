@@ -1,10 +1,11 @@
+
 import { projectSchema } from "../schema/project_schema.js";
 import { userModel} from "../models/user_model.js";
 import { ProjectModel } from "../models/project-model.js";
 
-export const postProject = async (req, res) => {
+export const createProject = async (req, res) => {
   try {
-    const { error, value } = projectSchema.validate({...req.body, image:req.file.filename});
+    const { error, value } = projectSchema.validate({...req.body});
 
     if (error) {
       return res.status(400).send(error.details[0].message);
@@ -19,7 +20,7 @@ export const postProject = async (req, res) => {
 
     const project = await ProjectModel.create({ ...value, user: userSessionId });
 
-    user.projects.push(project._id)
+    user.project.push(project._id)
 
     await user.save();
 
@@ -35,7 +36,7 @@ export const getAllProjects = async (req, res) => {
   try {
     //we are fetching Project that belongs to a particular user
     const userSessionId = req.session.user.id
-    const allProject = await Project.find({ user: userSessionId });
+    const allProject = await ProjectModel.find({ user: userSessionId });
     if (allProject.length == 0) {
       return res.status(404).send("No Project added");
     }
@@ -49,7 +50,7 @@ export const getAllProjects = async (req, res) => {
 
 export const updateProject = async (req, res) => {
     try {
-      const { error, value } = projectSchema.validate({...req.body, image:req.file.filename});
+      const { error, value } = projectSchema.validate({...req.body});
 
   
       if (error) {
@@ -89,11 +90,14 @@ export const updateProject = async (req, res) => {
             return res.status(404).send("Project not found");
         }
   
-        user.ProjectModel.pull(req.params.id);
+        user.project.pull(req.params.id);
         await user.save();
       res.status(200).json("Project deleted");
     } catch (error) {
       return res.status(500).json({error})
     }
   };
+
+
+
   

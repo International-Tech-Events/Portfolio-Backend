@@ -5,18 +5,20 @@ import { experienceSchema } from "../schema/experience_schema.js";
 export const addExperience = async (req, res) => {
 
   try {
-    const { error, value } = experienceSchema.validate(req.body)
+    const { error, value } = experienceSchema.validate({ ...req.body })
     if (error) {
       return res.status(400).send(error.details[0].message)
     }
-    const experience = await experienceModel.create({ ...value, user: userSessionId });
 
-    console.log('userId', req.session.user.id)
     const userSessionId = req.session.user.id
+
     const user = await userModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send('User not found');
     }
+
+    const experience = await experienceModel.create({ ...value, user: userSessionId });
+
     user.experience.push(experience._id);
 
     await user.save();
@@ -51,26 +53,26 @@ export const getAllUserExperience = async (req, res) => {
 // Update Experience
 export const updateExperience = async (req, res) => {
   try {
-    const { error, value } = userProfileSchema.validate(req.body);
-  
+    const { error, value } = userProfileSchema.validate({ ...req.body });
+
     if (error) {
       return res.status(400).send(error.details[0].message);
     }
 
-    const userSessionId = req.session.user.id; 
+    const userSessionId = req.session.user.id;
     const user = await userModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send("User not found");
     }
 
     const experience = await experienceModel.findByIdAndUpdate(req.params.id, value, { new: true });
-      if (!experience) {
-          return res.status(404).send("experience not found");
-      }
+    if (!experience) {
+      return res.status(404).send("experience not found");
+    }
 
     res.status(200).json({ experience });
   } catch (error) {
-    return res.status(500).json({error})
+    return res.status(500).json({ error })
   }
 };
 
@@ -79,21 +81,21 @@ export const updateExperience = async (req, res) => {
 //   Delete experience
 export const deleteExperience = async (req, res) => {
   try {
-    const userSessionId = req.session.user.id; 
-      const user = await userModel.findById(userSessionId);
-      if (!user) {
-        return res.status(404).send("User not found");
-      }
-  
-      const experience = await experienceModel.findByIdAndDelete(req.params.id);
-        if (!experience) {
-            return res.status(404).send("experience not found");
-        }
-  
-        user.experience.pull(req.params.id);
-        await user.save();
-      res.status(200).json("Experience deleted");
-    } catch (error) {
-      return res.status(500).json({error})
+    const userSessionId = req.session.user.id;
+    const user = await userModel.findById(userSessionId);
+    if (!user) {
+      return res.status(404).send("User not found");
     }
-  };
+
+    const experience = await experienceModel.findByIdAndDelete(req.params.id);
+    if (!experience) {
+      return res.status(404).send("experience not found");
+    }
+
+    user.experience.pull(req.params.id);
+    await user.save();
+    res.status(200).json("Experience deleted");
+  } catch (error) {
+    return res.status(500).json({ error })
+  }
+};

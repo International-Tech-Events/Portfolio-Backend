@@ -5,20 +5,21 @@ import { skillSchema } from "../schema/skill_schema.js";
 export const addSkill = async (req, res) => {
 
   try {
-    const { error, value } = skillSchema.validate(req.body)
+    const { error, value } = skillSchema.validate({...req.body})
     if (error) {
       return res.status(400).send(error.details[0].message)
     }
 
-    const skill = await skillModel.create({ ...value, user: userSessionId });
+const userSessionId = req.session.user.id
 
-    console.log('userId', req.session.user.id)
-    const userSessionId = req.session.user.id
-    const user = await userModel.findById(userSessionId);
+const user = await userModel.findById(userSessionId);
 
     if (!user) {
       return res.status(404).send('User not found');
     }
+
+    const skill = await skillModel.create({ ...value, user: userSessionId });
+
     user.skill.push(skill._id);
 
     await user.save();
@@ -55,7 +56,7 @@ export const getAllUserSkills = async (req, res) => {
 // Update Skills
 export const updateSkill = async (req, res) => {
   try {
-    const { error, value } = skillSchema.validate(req.body);
+    const { error, value } = skillSchema.validate({...req.body});
 
   
       if (error) {
@@ -94,7 +95,7 @@ export const deleteSkill = async (req, res) => {
             return res.status(404).send("Skill not found");
         }
   
-        user.skills.pull(req.params.id);
+        user.skill.pull(req.params.id);
         await user.save();
       res.status(200).json("Skill deleted");
     } catch (error) {
