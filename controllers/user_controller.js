@@ -103,7 +103,7 @@ export const login = async (req, res, next) => {
      filter.userName = userName;
    }
  
-   const users = await User.find(filter);
+   const users = await userModel.find(filter);
  
    return res.status(200).json({ users });
  };

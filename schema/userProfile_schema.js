@@ -11,5 +11,5 @@ export const userProfileSchema = Joi.object({
         contact: Joi.string().required(),
         resume: Joi.string().required(),
         languages: Joi.array().items(Joi.string()),
-        // user: Joi.string().required()
+        user: Joi.string().required()
     });

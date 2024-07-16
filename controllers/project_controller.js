@@ -20,7 +20,7 @@ export const createProject = async (req, res) => {
 
     const project = await ProjectModel.create({ ...value, user: userSessionId });
 
-    user.ProjectModel.push(project._id)
+    user.project.push(project._id)
 
     await user.save();
 
@@ -36,7 +36,7 @@ export const getAllProjects = async (req, res) => {
   try {
     //we are fetching Project that belongs to a particular user
     const userSessionId = req.session.user.id
-    const allProject = await Project.find({ user: userSessionId });
+    const allProject = await ProjectModel.find({ user: userSessionId });
     if (allProject.length == 0) {
       return res.status(404).send("No Project added");
     }
@@ -90,7 +90,7 @@ export const updateProject = async (req, res) => {
             return res.status(404).send("Project not found");
         }
   
-        user.ProjectModel.pull(req.params.id);
+        user.project.pull(req.params.id);
         await user.save();
       res.status(200).json("Project deleted");
     } catch (error) {

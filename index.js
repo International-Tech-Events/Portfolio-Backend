@@ -29,7 +29,7 @@ expressOasGenerator.handleResponses(app, {
 
 dbConnection();
 
-app.use(cors({credentials: true, origin: 'http://localhost:8600'}));
+app.use(cors({credentials: true, origin: '*'}));
 app.use(express.json());
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -53,7 +53,6 @@ app.use('/api/v1', educationRouter);
 app.use('/api/v1', achievementRouter);
 app.use('/api/v1', experienceRouter);
 app.use('/api/v1', skillsRouter);
-app.use('/api/v1', educationRouter);
 app.use('/api/v1', volunteeringRouter);
 app.use('/api/v1', projectRouter);
 app.use('/api/v1', userProfileRouter);
