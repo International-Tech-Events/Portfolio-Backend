@@ -10,6 +10,7 @@ userProfileRouter.post(
     remoteUpload.fields([
       { name: "profilePicture", maxCount: 1 },
       { name: "resume", maxCount: 1 },
+      { name: "coverPhoto", maxCount: 1 }
     ]),
     checkUserSession,
     createUserProfile
@@ -19,6 +20,7 @@ userProfileRouter.post(
       remoteUpload.fields([
         { name: "profilePicture", maxCount: 1 },
         { name: "resume", maxCount: 1 },
+        { name: "coverPhoto", maxCount: 1 }
       ]),
       checkUserSession,
       updateUserProfile

@@ -3,6 +3,7 @@ import Joi from "joi";
 export const userProfileSchema = Joi.object({
 
         profilePicture: Joi.string(),
+        coverPhoto: Joi.string(),
         location: Joi.string(),
         maritalStatus: Joi.string().valid('single', 'married', 'prefer-not-to-say'),
         sex: Joi.string().valid('male', 'female').required(),

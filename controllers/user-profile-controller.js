@@ -9,6 +9,7 @@ export const createUserProfile = async (req, res) => {
       ...req.body,
       profilePicture: req.files.profilePicture[0].filename,
       resume: req.files.resume[0].filename,
+      coverPhoto: req.files.coverPhoto[0].filename,
     });
 
 
@@ -46,6 +47,7 @@ export const updateUserProfile = async (req, res) => {
         ...req.body,
         profilePicture: req.files.profilePicture[0].filename,
         resume: req.files.resume[0].filename,
+        coverPhoto: req.files.coverPhoto[0].filename,
       });
   
       if (error) {
