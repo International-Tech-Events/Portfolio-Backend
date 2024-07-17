@@ -28,13 +28,3 @@ userProfileRouter.post(
 
     userProfileRouter.get('/users/userProfile', checkUserSession, getUserProfile);
   
-
-
-
-
-// userProfileRouter.post('/userProfiles', upload.single('profilePicture'), checkUserSession,postuserProfile);
-
-// userProfileRouter.get('/userProfiles/:id', getUserProfileById);
-// userProfileRouter.patch('/userProfiles/:id', upload.single('profilePicture'), updateUserProfile);
-// userProfileRouter.delete('/userProfiles/:id', deleteUserProfile);
-

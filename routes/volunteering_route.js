@@ -6,10 +6,10 @@ import { addVolunteering, deleteVolunteering, getAllUserVolunteering, updateVolu
 
 export const volunteeringRouter = Router()
 
-volunteeringRouter.post('/user/volunteering', checkUserSession, addVolunteering)
+volunteeringRouter.post('/users/volunteering', checkUserSession, addVolunteering)
 
-volunteeringRouter.get('/user/volunteering', checkUserSession, getAllUserVolunteering)
+volunteeringRouter.get('/users/volunteering', checkUserSession, getAllUserVolunteering)
 
-volunteeringRouter.patch('/user/volunteering/:volunteeringId', checkUserSession, updateVolunteering)
+volunteeringRouter.patch('/users/volunteering/:volunteeringId', checkUserSession, updateVolunteering)
 
-volunteeringRouter.delete('/user/volunteering/:volunteeringId', checkUserSession, deleteVolunteering)
+volunteeringRouter.delete('/users/volunteering/:volunteeringId', checkUserSession, deleteVolunteering)

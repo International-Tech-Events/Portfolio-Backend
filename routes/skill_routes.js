@@ -7,10 +7,10 @@ import { addSkill, deleteSkill, getAllUserSkills, updateSkill } from "../control
 
 export const skillsRouter = Router()
 
-skillsRouter.post('/user/skills', checkUserSession, addSkill)
+skillsRouter.post('/users/skills', checkUserSession, addSkill)
 
-skillsRouter.get('/user/skills', checkUserSession, getAllUserSkills)
+skillsRouter.get('/users/skills', checkUserSession, getAllUserSkills)
 
-skillsRouter.patch('/user/skills/:skillId', checkUserSession, updateSkill)
+skillsRouter.patch('/users/skills/:skillId', checkUserSession, updateSkill)
 
-skillsRouter.delete('/user/skills/:skillId', checkUserSession, deleteSkill)
+skillsRouter.delete('/users/skills/:skillId', checkUserSession, deleteSkill)

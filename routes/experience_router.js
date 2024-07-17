@@ -6,12 +6,12 @@ import { addExperience, deleteExperience, getAllUserExperience, updateExperience
 
 export const experienceRouter = Router()
 
-experienceRouter.post('/user/experience', checkUserSession, addExperience)
+experienceRouter.post('/users/experience', checkUserSession, addExperience)
 
-experienceRouter.get('/user/experience', checkUserSession, getAllUserExperience)
+experienceRouter.get('/users/experience', checkUserSession, getAllUserExperience)
 
-experienceRouter.patch('/user/experience/:experienceId', checkUserSession, updateExperience)
+experienceRouter.patch('/users/experience/:experienceId', checkUserSession, updateExperience)
 
-experienceRouter.delete('/user/experience/:experienceId', checkUserSession, deleteExperience)
+experienceRouter.delete('/users/experience/:experienceId', checkUserSession, deleteExperience)
 
 
