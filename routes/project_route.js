@@ -4,7 +4,7 @@ import {  getAllProjects,createProject,updateProject,deleteProject } from "../co
 
 export const projectRouter = Router();
 
-projectRouter.post('/projects', createProject);
-projectRouter.get('/projects', getAllProjects);
-projectRouter.delete('/projects/:id', deleteProject);
-projectRouter.patch('/projects/:id', updateProject);
+projectRouter.post('/user/projects', createProject);
+projectRouter.get('/user/projects', getAllProjects);
+projectRouter.delete('/user/projects/:id', deleteProject);
+projectRouter.patch('/user/projects/:id', updateProject);
