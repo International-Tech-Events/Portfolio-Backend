@@ -51,6 +51,24 @@ export const getAllUserAchievement = async (req, res) => {
 }
 
 
+// Get one User Achievement by achievementId
+export const getOneAchievement = async (req, res) => {
+  try {
+    const userSessionId = req.session?.user?.id || req?.user?.id;
+    const achievementId = req.params.achievementId;
+
+    const achievement = await achievementModel.findOne({ _id: achievementId, user: userSessionId });
+    if (!achievement) {
+      return res.status(404).send('Experience not found');
+    }
+    
+    res.status(200).json({ achievement });
+  } catch (error) {
+    console.error('Error fetching achievement:', error);
+    res.status(500).send('Server Error');
+  }
+};
+
 // Update an Achievement
 export const updateAchievement = async (req, res) => {
   try {

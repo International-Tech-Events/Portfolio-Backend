@@ -10,6 +10,6 @@ export const projectSchema = Joi.object({
         nameOfInstitution: Joi.string().required(),
         startDate: Joi.date().required(),
         endDate: Joi.date(), 
-        user: Joi.string().required()
+        user: Joi.string()
         
     });

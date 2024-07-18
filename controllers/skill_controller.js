@@ -50,6 +50,23 @@ export const getAllUserSkills = async (req, res) => {
 }
 
 
+// Get one User Skill by skillId
+export const getOneSkill = async (req, res) => {
+  try {
+    const userSessionId = req.session?.user?.id || req?.user?.id;
+    const skillId = req.params.skillId;
+
+    const skill = await skillModel.findOne({ _id: skillId, user: userSessionId });
+    if (!skill) {
+      return res.status(404).send('Skill not found');
+    }
+    
+    res.status(200).json({ skill });
+  } catch (error) {
+    console.error('Error fetching skill:', error);
+    res.status(500).send('Server Error');
+  }
+};
 
 
 // Update Skills

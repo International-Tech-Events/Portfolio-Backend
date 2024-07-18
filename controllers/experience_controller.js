@@ -35,7 +35,7 @@ export const addExperience = async (req, res) => {
 export const getAllUserExperience = async (req, res) => {
 
   try {
-    const userSessionId = req.session?.user?.id || req?.user?.id;    
+    const userSessionId = req.session?.user?.id || req?.user?.id;
     const allexperience = await experienceModel.find({ user: userSessionId })
 
     if (allexperience.length == 0) {
@@ -48,6 +48,24 @@ export const getAllUserExperience = async (req, res) => {
 
 }
 
+// Get one User Experience by experienceId
+export const getOneExperience = async (req, res) => {
+  try {
+    const userSessionId = req.session?.user?.id || req?.user?.id;
+    const experienceId = req.params.experienceId;
+
+    // Find the experience by experienceId and userSessionId
+    const experience = await experienceModel.findOne({ _id: experienceId, user: userSessionId });
+    if (!experience) {
+      return res.status(404).send('Experience not found');
+    }
+    
+    res.status(200).json({ experience });
+  } catch (error) {
+    console.error('Error fetching experience:', error);
+    res.status(500).send('Server Error');
+  }
+};
 
 // Update Experience
 export const updateExperience = async (req, res) => {
@@ -58,7 +76,7 @@ export const updateExperience = async (req, res) => {
       return res.status(400).send(error.details[0].message);
     }
 
-    const userSessionId = req.session?.user?.id || req?.user?.id;    
+    const userSessionId = req.session?.user?.id || req?.user?.id;
     const user = await userModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send("User not found");
@@ -80,7 +98,7 @@ export const updateExperience = async (req, res) => {
 //   Delete experience
 export const deleteExperience = async (req, res) => {
   try {
-    const userSessionId = req.session?.user?.id || req?.user?.id;    
+    const userSessionId = req.session?.user?.id || req?.user?.id;
     const user = await userModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send("User not found");

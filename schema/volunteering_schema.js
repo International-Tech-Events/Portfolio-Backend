@@ -11,6 +11,5 @@ export const volunteeringSchema = Joi.object({
         responsibilities: Joi.string().required(),
         location: Joi.string(),
         projectName: Joi.string().required(),
-        user: Joi.string().required()
-
+        user: Joi.string()
     });

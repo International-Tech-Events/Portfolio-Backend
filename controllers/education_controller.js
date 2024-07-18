@@ -52,6 +52,25 @@ export const getAllUserEducation = async (req, res) => {
 }
 
 
+// Get one User Education by educationId
+export const getOneEducation = async (req, res) => {
+  try {
+    const userSessionId = req.session?.user?.id || req?.user?.id;
+    const educationId = req.params.educationId;
+
+    const education = await educationModel.findOne({ _id: educationId, user: userSessionId });
+    if (!education) {
+      return res.status(404).send('Education not found');
+    }
+    
+    res.status(200).json({ education });
+  } catch (error) {
+    console.error('Error fetching education:', error);
+    res.status(500).send('Server Error');
+  }
+};
+
+
 // Update Education
 export const updateEducation = async (req, res) => {
   try {
