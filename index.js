@@ -31,17 +31,15 @@ dbConnection();
 
 app.use(cors({credentials: true, origin: '*'}));
 app.use(express.json());
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    // cookie: {secure: true},
-    store: MongoStore.create({
-        mongoUrl: process.env.Mongo_url
-    })
-    
-
-}));
+// app.use(session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: true,
+//     // cookie: {secure: true},
+//     store: MongoStore.create({
+//         mongoUrl: process.env.Mongo_url
+//     })
+// }));
 
 app.get("/api/v1/health", (req, res) => {
     res.json({ status: "UP" });

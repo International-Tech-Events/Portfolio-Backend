@@ -12,16 +12,17 @@ export const signup = async (req, res) => {
     }
 
     const email = value.email
-    console.log('email', email)
+    // console.log('email', email)
     
-    const findIfUserExist = await userModel.findOne({email:email})
+    const findIfUserExist = await userModel.findOne({email})
     if (findIfUserExist){
         return res.status(401).send('user has already signed up')
     } else{
         const hashedPassword = await bcrypt.hash(value.password,12)
-        value.password = hashedPassword
-        const addUser = await userModel.create(value)
-        return res.status(201).send(addUser)
+        value.password = hashedPassword;
+
+        await userModel.create(value)
+        return res.status(201).json({message: "Registration successful"})
     }
 }
 
@@ -32,13 +33,13 @@ export const login = async (req, res, next) => {
        const { userName, email, password } = req.body;
        //  Find a user using their email or username
        const user = await userModel.findOne(
-          { $or: [{ email: email }, { userName: userName }] }
+          { $or: [{ email}, { userName }] }
        );
        if (!user) {
           return res.status(401).json('User does not exist')
        }
        // Verify user password
-       const correctPass = bcrypt.compareSync(password, user.password)
+       const correctPass = bcrypt.compare(password, user.password)
        if (!correctPass) {
           return res.status(401).json('Invalid login details')
        }
@@ -129,13 +130,13 @@ export const login = async (req, res, next) => {
      const { userName, email, password } = req.body;
      //  Find a user using their email or username
      const user = await userModel.findOne(
-        { $or: [{ email: email }, { userName: userName }] }
+        { $or: [{ email }, { userName }] }
      );
      if (!user) {
         return res.status(401).json('User does not exist')
      }
      // Verify user password
-     const correctPass = bcrypt.compareSync(password, user.password)
+     const correctPass = bcrypt.compare(password, user.password)
      if (!correctPass) {
         return res.status(401).json('Invalid login details')
      }
@@ -147,7 +148,7 @@ export const login = async (req, res, next) => {
     
     );
 
-     console.log('user', req.session.user)
+    //  console.log('user', req.session.user)
      // Return response
      res.status(201).json({
       message: 'User  logged in',

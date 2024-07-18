@@ -10,14 +10,14 @@ export const addSkill = async (req, res) => {
       return res.status(400).send(error.details[0].message)
     }
 
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const user = await userModel.findById(userSessionId);
+    const userId = req.session?.user?.id || req?.user?.id;
+    const user = await userModel.findById(userId);
 
     if (!user) {
       return res.status(404).send('User not found');
     }
 
-    const skill = await skillModel.create({ ...value, user: userSessionId });
+    const skill = await skillModel.create({ ...value, user: userId });
 
     user.skill.push(skill._id);
 
@@ -36,11 +36,11 @@ export const addSkill = async (req, res) => {
 export const getAllUserSkills = async (req, res) => {
 
   try {
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const allskill = await skillModel.find({ user: userSessionId })
+    const userId = req.session?.user?.id || req?.user?.id;
+    const allskill = await skillModel.find({ user: userId })
 
     if (allskill.length == 0) {
-      return res.status(404).send('No skills Added')
+      return res.status(404).json({skills: allskill})
     }
     res.status(200).json({ skill: allskill })
   } catch (error) {
@@ -53,18 +53,18 @@ export const getAllUserSkills = async (req, res) => {
 // Get one User Skill by skillId
 export const getOneSkill = async (req, res) => {
   try {
-    const userSessionId = req.session?.user?.id || req?.user?.id;
+    const userId = req.session?.user?.id || req?.user?.id;
     const skillId = req.params.skillId;
 
-    const skill = await skillModel.findOne({ _id: skillId, user: userSessionId });
+    const skill = await skillModel.findOne({ _id: skillId, user: userId });
     if (!skill) {
-      return res.status(404).send('Skill not found');
+      return res.status(404).json(skill);
     }
     
     res.status(200).json({ skill });
   } catch (error) {
-    console.error('Error fetching skill:', error);
-    res.status(500).send('Server Error');
+
+    res.status(500).send({error});
   }
 };
 
@@ -79,8 +79,8 @@ export const updateSkill = async (req, res) => {
       return res.status(400).send(error.details[0].message);
     }
 
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const user = await userModel.findById(userSessionId);
+    const userId = req.session?.user?.id || req?.user?.id;
+    const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
@@ -100,8 +100,8 @@ export const updateSkill = async (req, res) => {
 //   Delete Skills
 export const deleteSkill = async (req, res) => {
   try {
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const user = await userModel.findById(userSessionId);
+    const userId = req.session?.user?.id || req?.user?.id;
+    const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).send("User not found");
     }

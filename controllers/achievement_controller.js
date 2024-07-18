@@ -12,14 +12,14 @@ export const addAchievement = async (req, res) => {
     if (error) {
       return res.status(400).send(error.details[0].message)
     }
-    const userSessionId = req.session?.user?.id || req?.user?.id;
+    const userId = req.session?.user?.id || req?.user?.id;
 
-    const user = await userModel.findById(userSessionId);
+    const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).send('User not found');
     }
 
-    const achievement = await achievementModel.create({ ...value, user: userSessionId });
+    const achievement = await achievementModel.create({ ...value, user: userId });
 
     user.achievement.push(achievement._id);
 
@@ -29,7 +29,7 @@ export const addAchievement = async (req, res) => {
     res.status(201).json({ achievement })
 
   } catch (error) {
-    return res.status(500).send(error)
+    console.log(error);
   }
 }
 
@@ -38,14 +38,14 @@ export const addAchievement = async (req, res) => {
 export const getAllUserAchievement = async (req, res) => {
 
   try {
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const allachievements = await achievementModel.find({ user: userSessionId })
+    const userId = req.session?.user?.id || req?.user?.id;
+    const allachievements = await achievementModel.find({ user: userId })
     if (allachievements.length == 0) {
-      return res.status(404).send('No Achievement Added')
+      return res.status(200).json({achievement: allachievements})
     }
     res.status(200).json({ achievement: allachievements })
   } catch (error) {
-
+    return res.status(500).json({Error})
   }
 
 }
@@ -54,18 +54,17 @@ export const getAllUserAchievement = async (req, res) => {
 // Get one User Achievement by achievementId
 export const getOneAchievement = async (req, res) => {
   try {
-    const userSessionId = req.session?.user?.id || req?.user?.id;
+    const userId = req.session?.user?.id || req?.user?.id;
     const achievementId = req.params.achievementId;
 
-    const achievement = await achievementModel.findOne({ _id: achievementId, user: userSessionId });
+    const achievement = await achievementModel.findOne({ _id: achievementId, user: userId });
     if (!achievement) {
-      return res.status(404).send('Experience not found');
+      return res.status(200).json({Achievement: achievement});
     }
     
     res.status(200).json({ achievement });
   } catch (error) {
-    console.error('Error fetching achievement:', error);
-    res.status(500).send('Server Error');
+    res.status(500).json({Error});
   }
 };
 
@@ -78,8 +77,8 @@ export const updateAchievement = async (req, res) => {
       return res.status(400).send(error.details[0].message);
     }
 
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const user = await userModel.findById(userSessionId);
+    const userId = req.session?.user?.id || req?.user?.id;
+    const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
@@ -99,8 +98,8 @@ export const updateAchievement = async (req, res) => {
 //   Delete Achievement
 export const deleteAchievement = async (req, res) => {
   try {
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const user = await userModel.findById(userSessionId);
+    const userId = req.session?.user?.id || req?.user?.id;
+    const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).send("User not found");
     }

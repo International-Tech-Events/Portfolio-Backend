@@ -10,13 +10,13 @@ export const addExperience = async (req, res) => {
       return res.status(400).send(error.details[0].message)
     }
 
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const user = await userModel.findById(userSessionId);
+    const userId = req.session?.user?.id || req?.user?.id;
+    const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).send('User not found');
     }
 
-    const experience = await experienceModel.create({ ...value, user: userSessionId });
+    const experience = await experienceModel.create({ ...value, user: userId });
 
     user.experience.push(experience._id);
 
@@ -35,11 +35,11 @@ export const addExperience = async (req, res) => {
 export const getAllUserExperience = async (req, res) => {
 
   try {
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const allexperience = await experienceModel.find({ user: userSessionId })
+    const userId = req.session?.user?.id || req?.user?.id;
+    const allexperience = await experienceModel.find({ user: userId })
 
     if (allexperience.length == 0) {
-      return res.status(404).send('No Experience Added')
+      return res.status(200).json({Experience: allexperience})
     }
     res.status(200).json({ experience: allexperience })
   } catch (error) {
@@ -51,19 +51,18 @@ export const getAllUserExperience = async (req, res) => {
 // Get one User Experience by experienceId
 export const getOneExperience = async (req, res) => {
   try {
-    const userSessionId = req.session?.user?.id || req?.user?.id;
+    const userId = req.session?.user?.id || req?.user?.id;
     const experienceId = req.params.experienceId;
 
-    // Find the experience by experienceId and userSessionId
-    const experience = await experienceModel.findOne({ _id: experienceId, user: userSessionId });
+    // Find the experience by experienceId and userId
+    const experience = await experienceModel.findOne({ _id: experienceId, user: userId });
     if (!experience) {
-      return res.status(404).send('Experience not found');
+      return res.status(404).json(experience);
     }
     
     res.status(200).json({ experience });
   } catch (error) {
-    console.error('Error fetching experience:', error);
-    res.status(500).send('Server Error');
+    res.status(500).json({Error});
   }
 };
 
@@ -76,8 +75,8 @@ export const updateExperience = async (req, res) => {
       return res.status(400).send(error.details[0].message);
     }
 
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const user = await userModel.findById(userSessionId);
+    const userId = req.session?.user?.id || req?.user?.id;
+    const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
@@ -98,8 +97,8 @@ export const updateExperience = async (req, res) => {
 //   Delete experience
 export const deleteExperience = async (req, res) => {
   try {
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const user = await userModel.findById(userSessionId);
+    const userId = req.session?.user?.id || req?.user?.id;
+    const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
