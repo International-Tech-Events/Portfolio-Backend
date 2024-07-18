@@ -39,7 +39,7 @@ export const login = async (req, res, next) => {
           return res.status(401).json('User does not exist')
        }
        // Verify user password
-       const correctPass = bcrypt.compare(password, user.password)
+       const correctPass = bcrypt.compareSync(password, user.password)
        if (!correctPass) {
           return res.status(401).json('Invalid login details')
        }
@@ -136,7 +136,7 @@ export const login = async (req, res, next) => {
         return res.status(401).json('User does not exist')
      }
      // Verify user password
-     const correctPass = bcrypt.compare(password, user.password)
+     const correctPass = bcrypt.compareSync(password, user.password)
      if (!correctPass) {
         return res.status(401).json('Invalid login details')
      }
@@ -144,7 +144,7 @@ export const login = async (req, res, next) => {
      const token = jwt.sign(
       {id:user.id}, 
       process.env.JWT_PRIVATE_KEY,
-      { expiresIn: '3h' }
+      { expiresIn: '72hr' }
     
     );
 
