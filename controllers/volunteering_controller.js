@@ -49,6 +49,27 @@ export const getAllUserVolunteering = async (req, res) => {
 }
 
 
+// Get one User Volunteering by volunteeringId
+export const getOneVolunteering = async (req, res) => {
+  try {
+    const userSessionId = req.session?.user?.id || req?.user?.id;
+    const volunteeringId = req.params.volunteeringId;
+
+    const volunteering = await volunteeringModel.findOne({ _id: volunteeringId, user: userSessionId });
+    if (!volunteering) {
+      return res.status(404).send('volunteering not found');
+    }
+    
+    res.status(200).json({ volunteering });
+  } catch (error) {
+    console.error('Error fetching volunteering:', error);
+    res.status(500).send('Server Error');
+  }
+};
+
+
+
+
 // Update Volunteering
 export const updateVolunteering = async (req, res) => {
   try {

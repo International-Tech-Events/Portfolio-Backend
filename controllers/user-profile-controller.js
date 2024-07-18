@@ -87,3 +87,22 @@ export const updateUserProfile = async (req, res) => {
       return res.status(500).json({error})
     }
   };
+
+
+// Get one User Profile by userProfileId
+export const getOneUserProfile = async (req, res) => {
+  try {
+    const userSessionId = req.session?.user?.id || req?.user?.id;
+    const userProfileId = req.params.userProfileId;
+
+    const userProfile = await userProfileModel.findOne({ _id: userProfileId, user: userSessionId });
+    if (!userProfile) {
+      return res.status(404).send('userProfile not found');
+    }
+    
+    res.status(200).json({ userProfile });
+  } catch (error) {
+    console.error('Error fetching userProfile:', error);
+    res.status(500).send('Server Error');
+  }
+};

@@ -46,6 +46,24 @@ export const getAllProjects = async (req, res) => {
 };
 
 
+// Get one User Project by projectId
+export const getOneProject = async (req, res) => {
+  try {
+    const userSessionId = req.session?.user?.id || req?.user?.id;
+    const projectId = req.params.projectId;
+
+    const project = await ProjectModel.findOne({ _id: projectId, user: userSessionId });
+    if (!project) {
+      return res.status(404).send('Project not found');
+    }
+    
+    res.status(200).json({ project });
+  } catch (error) {
+    console.error('Error fetching project:', error);
+    res.status(500).send('Server Error');
+  }
+};
+
 
 export const updateProject = async (req, res) => {
     try {

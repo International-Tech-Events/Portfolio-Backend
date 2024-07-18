@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import {  getAllProjects,createProject,updateProject,deleteProject } from "../controllers/project_controller.js";
+import {  getAllProjects, createProject, updateProject, getOneProject, deleteProject } from "../controllers/project_controller.js";
 
 export const projectRouter = Router();
 
@@ -10,6 +10,8 @@ projectRouter.post('/users/projects', createProject);
 
 projectRouter.get('/users/projects', getAllProjects);
 
-projectRouter.delete('/users/projects/:id', deleteProject);
+projectRouter.get('/users/projects/:projectId', getOneProject);
 
-projectRouter.patch('/users/projects/:id', updateProject);
+projectRouter.delete('/users/projects/:projectId', deleteProject);
+
+projectRouter.patch('/users/projects/:projectId', updateProject);
