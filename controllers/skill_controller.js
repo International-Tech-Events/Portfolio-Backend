@@ -24,7 +24,7 @@ export const addSkill = async (req, res) => {
     await user.save();
 
     //return the skill
-    res.status(201).json({ skill })
+    res.status(201).json("Skill Added")
 
   } catch (error) {
     return res.status(500).send(error)
@@ -90,7 +90,7 @@ export const updateSkill = async (req, res) => {
       return res.status(404).send("Skill not found");
     }
 
-    res.status(200).json({ skill });
+    res.status(200).json("Skill Updated");
   } catch (error) {
     return res.status(500).json({ error })
   }

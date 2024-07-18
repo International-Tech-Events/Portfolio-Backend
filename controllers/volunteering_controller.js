@@ -26,7 +26,7 @@ export const addVolunteering = async (req, res) => {
 
     await user.save();
 
-    res.status(201).json({ volunteering });
+    res.status(201).json("volunteering Added");
   } catch (error) {
     console.log(error);
   }
@@ -93,7 +93,7 @@ export const updateVolunteering = async (req, res) => {
       return res.status(404).send("Volunteering not found");
     }
 
-    res.status(200).json({ volunteering });
+    res.status(200).json("volunteering Updated");
   } catch (error) {
     return res.status(500).json({ error });
   }

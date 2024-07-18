@@ -26,7 +26,7 @@ export const addAchievement = async (req, res) => {
     await user.save();
 
     //return the achievement
-    res.status(201).json({ achievement })
+    res.status(201).json("Achievement Added")
 
   } catch (error) {
     console.log(error);
@@ -88,7 +88,7 @@ export const updateAchievement = async (req, res) => {
       return res.status(404).send("Achievement not found");
     }
 
-    res.status(200).json({ achievement });
+    res.status(200).json("Achievement Updated");
   } catch (error) {
     return res.status(500).json({ error })
   }
