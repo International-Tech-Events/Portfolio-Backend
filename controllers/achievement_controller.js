@@ -26,7 +26,7 @@ export const addAchievement = async (req, res) => {
     await user.save();
 
     //return the achievement
-    res.status(201).json("Achievement Added")
+    res.status(201).json({message: "Achievement Added"})
 
   } catch (error) {
     console.log(error);
@@ -85,7 +85,7 @@ export const updateAchievement = async (req, res) => {
 
     const achievement = await achievementModel.findByIdAndUpdate(req.params.id, value, { new: true });
     if (!achievement) {
-      return res.status(404).send("Achievement not found");
+      return res.status(404).send({message:"Achievement not found"});
     }
 
     res.status(200).json("Achievement Updated");
@@ -112,7 +112,7 @@ export const deleteAchievement = async (req, res) => {
     user.achievement.pull(req.params.id);
     await user.save();
 
-    res.status(200).json("Achievement deleted");
+    res.status(200).json({message: "Achievement deleted"});
   } catch (error) {
     return res.status(500).json({ error })
   }

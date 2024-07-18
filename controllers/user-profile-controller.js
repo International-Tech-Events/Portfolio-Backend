@@ -33,7 +33,7 @@ export const createUserProfile = async (req, res) => {
 
     await user.save();
 
-    res.status(201).json("Profile Created");
+    res.status(201).json({message: "Profile Created"});
   } catch (error) {
     console.log(error);
   }
@@ -65,7 +65,7 @@ export const updateUserProfile = async (req, res) => {
             return res.status(404).send("Profile not found");
         }
   
-      res.status(201).json("Profile Updated");
+      res.status(201).json({message: "Profile Updated"});
     } catch (error) {
       console.log(error);
     }

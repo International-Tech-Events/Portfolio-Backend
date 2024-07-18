@@ -24,7 +24,7 @@ export const addSkill = async (req, res) => {
     await user.save();
 
     //return the skill
-    res.status(201).json("Skill Added")
+    res.status(201).json({message: "Skill Added"})
 
   } catch (error) {
     return res.status(500).send(error)
@@ -90,7 +90,7 @@ export const updateSkill = async (req, res) => {
       return res.status(404).send("Skill not found");
     }
 
-    res.status(200).json("Skill Updated");
+    res.status(200).json({message: "Skill Updated"});
   } catch (error) {
     return res.status(500).json({ error })
   }
@@ -113,7 +113,7 @@ export const deleteSkill = async (req, res) => {
 
     user.skill.pull(req.params.id);
     await user.save();
-    res.status(200).json("Skill deleted");
+    res.status(200).json({message: "Skill deleted"});
   } catch (error) {
     return res.status(500).json({ error })
   }

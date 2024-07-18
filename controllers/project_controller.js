@@ -23,7 +23,7 @@ export const createProject = async (req, res) => {
 
     await user.save();
 
-    res.status(201).json("Project Added");
+    res.status(201).json({message: "Project Added"});
   } catch (error) {
     console.log(error);
   }
@@ -84,7 +84,7 @@ export const updateProject = async (req, res) => {
             return res.status(404).send("Project not found");
         }
   
-      res.status(200).json("Project Updated");
+      res.status(200).json({message: "Project Updated"});
     } catch (error) {
       return res.status(500).json({error})
     }
@@ -108,7 +108,7 @@ export const updateProject = async (req, res) => {
   
         user.project.pull(req.params.id);
         await user.save();
-      res.status(200).json("Project deleted");
+      res.status(200).json({message:"Project deleted"});
     } catch (error) {
       return res.status(500).json({error})
     }
