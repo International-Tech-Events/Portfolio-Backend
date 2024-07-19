@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken";
 
 export const checkUserSession = (req, res, next) => {
-    if (req.headers.authorization) {
+    if (req.session.user) {
+        next();
+    } else if (req.headers.authorization) {
         try {
             const token = req.headers.authorization.split(' ')[1]
             req.user = jwt.verify(token, process.env.JWT_PRIVATE_KEY)

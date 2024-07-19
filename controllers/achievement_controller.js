@@ -19,7 +19,9 @@ export const addAchievement = async (req, res) => {
       return res.status(404).send('User not found');
     }
 
-    const achievement = await achievementModel.create({ ...value, user: userId });
+    const achievement = await achievementModel.create({ ...value,
+      image: req.file.filename,
+       user: userId });
 
     user.achievement.push(achievement._id);
 
@@ -71,7 +73,9 @@ export const getOneAchievement = async (req, res) => {
 // Update an Achievement
 export const updateAchievement = async (req, res) => {
   try {
-    const { error, value } = achievementSchema.validate({ ...req.body });
+    const { error, value } = achievementSchema.validate({ ...req.body,
+      image:req.files.image[0].filename
+     });
 
     if (error) {
       return res.status(400).send(error.details[0].message);

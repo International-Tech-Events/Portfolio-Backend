@@ -31,24 +31,31 @@ export const signup = async (req, res) => {
 export const login = async (req, res, next) => {
     try {
        const { userName, email, password } = req.body;
+
+        // Ensure at least email or userName and password are provided
+    if (!password || (!email && !userName)) {
+      return res.status(400).json('Email or userName and password are required');
+    }
+    
        //  Find a user using their email or username
        const user = await userModel.findOne(
-          { $or: [{ email}, { userName }] }
+          { $or: [{ email: email}, { userName: userName }] }
        );
        if (!user) {
           return res.status(401).json('User does not exist')
-       }
+       } else {
        // Verify user password
-       const correctPass = bcrypt.compareSync(password, user.password)
+       const correctPass = bcrypt.compareSync(password, user.password);
        if (!correctPass) {
           return res.status(401).json('Invalid login details')
        }
        // Generate a session for the user
-       req.session.user = { id: user.id }
+       req.session.user = { id: user.id };
 
        console.log('user', req.session.user)
        // Return response
        res.status(201).json('Login successful')
+      }
     } catch (error) {
        next(error)
     }
@@ -87,9 +94,12 @@ export const login = async (req, res, next) => {
  
    return res.status(200).json({ user: userDetails });
    } catch (error) {
-     console.log(error);
+     next(error);
    }
  };
+
+
+
  
  export const getUsers = async (req, res) => {
   
@@ -128,9 +138,16 @@ export const login = async (req, res, next) => {
  export const token = async (req, res, next) => {
   try {
      const { userName, email, password } = req.body;
+
+         //Check if email or userName and password are provided
+    if (!password || (!email && !userName)) {
+      return res.status(400).json('Email or userName and password are required');
+    }
+
+
      //  Find a user using their email or username
      const user = await userModel.findOne(
-        { $or: [{ email }, { userName }] }
+        { $or: [{ email: email }, { userName: userName }] }
      );
      if (!user) {
         return res.status(401).json('User does not exist')
@@ -144,7 +161,7 @@ export const login = async (req, res, next) => {
      const token = jwt.sign(
       {id:user.id}, 
       process.env.JWT_PRIVATE_KEY,
-      { expiresIn: '72hr' }
+      { expiresIn: '72h' }
     
     );
 
