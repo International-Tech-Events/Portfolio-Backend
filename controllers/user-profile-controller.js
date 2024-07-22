@@ -7,9 +7,9 @@ export const createUserProfile = async (req, res) => {
   try {
     const { error, value } = userProfileSchema.validate({
       ...req.body,
-      profilePicture: req.files.profilePicture[0].filename,
-      resume: req.files.resume[0].filename,
-      coverPhoto: req.files.coverPhoto[0].filename,
+      profilePicture: req.files?.profilePicture[0].filename,
+      resume: req.files?.resume[0].filename,
+      coverPhoto: req.files?.coverPhoto[0].filename,
     });
 
 
@@ -17,23 +17,23 @@ export const createUserProfile = async (req, res) => {
       return res.status(400).send(error.details[0].message);
     }
 
-    const userSessionId = req.session?.user?.id || req?.user?.id;
+    const userId = req.session?.user?.id || req?.user?.id;
 
-    const user = await userModel.findById(userSessionId);
+    const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
 
     console.log(value)
 
-    const profile = await userProfileModel.create({ ...value, user: userSessionId });
-    console.log('py', profile)
+    const profile = await userProfileModel.create({ ...value, user: userId });
+    // console.log('py', profile)
 
     user.userProfile = profile._id;
 
     await user.save();
 
-    res.status(201).json({ profile });
+    res.status(201).json({message: "Profile Created"});
   } catch (error) {
     console.log(error);
   }
@@ -54,8 +54,8 @@ export const updateUserProfile = async (req, res) => {
         return res.status(400).send(error.details[0].message);
       }
   
-      const userSessionId = req.session?.user?.id || req?.user?.id;
-      const user = await userModel.findById(userSessionId);
+      const userId = req.session?.user?.id || req?.user?.id;
+      const user = await userModel.findById(userId);
       if (!user) {
         return res.status(404).send("User not found");
       }
@@ -65,7 +65,7 @@ export const updateUserProfile = async (req, res) => {
             return res.status(404).send("Profile not found");
         }
   
-      res.status(201).json({ profile });
+      res.status(201).json({message: "Profile Updated"});
     } catch (error) {
       console.log(error);
     }
@@ -77,10 +77,14 @@ export const updateUserProfile = async (req, res) => {
   export const getUserProfile = async (req, res) => {
     try {
     //  Get user id from session or request
-      const userSessionId = req.session?.user?.id || req?.user?.id;
-      const profile = await userProfileModel.find({ user: userSessionId });
+      const userId = req.session?.user?.id || req?.user?.id;
+
+      const profile = await userProfileModel.findOne({ user: userId }).populate({
+        path: 'user',
+        select: '-password'
+      });
       if (!profile) {
-        return res.status(404).send("No profile added");
+        return res.status(404).json({profile});
       }
       res.status(200).json({profile});
     } catch (error) {
@@ -89,20 +93,19 @@ export const updateUserProfile = async (req, res) => {
   };
 
 
-// Get one User Profile by userProfileId
-export const getOneUserProfile = async (req, res) => {
-  try {
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const userProfileId = req.params.userProfileId;
+// // Get one User Profile by userProfileId
+// export const getOneUserProfile = async (req, res) => {
+//   try {
+//     const userId = req.session?.user?.id || req?.user?.id;
+//     const userProfileId = req.params.userProfileId;
 
-    const userProfile = await userProfileModel.findOne({ _id: userProfileId, user: userSessionId });
-    if (!userProfile) {
-      return res.status(404).send('userProfile not found');
-    }
+//     const userProfile = await userProfileModel.findOne({ _id: userProfileId, user: userId });
+//     if (!userProfile) {
+//       return res.status(404).json(userProfile);
+//     }
     
-    res.status(200).json({ userProfile });
-  } catch (error) {
-    console.error('Error fetching userProfile:', error);
-    res.status(500).send('Server Error');
-  }
-};
+//     res.status(200).json({ userProfile });
+//   } catch (error) {
+//     res.status(500).send({error});
+//   }
+// };
