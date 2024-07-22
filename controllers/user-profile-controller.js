@@ -7,9 +7,9 @@ export const createUserProfile = async (req, res) => {
   try {
     const { error, value } = userProfileSchema.validate({
       ...req.body,
-      profilePicture: req.files.profilePicture[0].filename,
-      resume: req.files.resume[0].filename,
-      coverPhoto: req.files.coverPhoto[0].filename,
+      profilePicture: req.files?.profilePicture[0].filename,
+      resume: req.files?.resume[0].filename,
+      coverPhoto: req.files?.coverPhoto[0].filename,
     });
 
 
@@ -78,9 +78,13 @@ export const updateUserProfile = async (req, res) => {
     try {
     //  Get user id from session or request
       const userId = req.session?.user?.id || req?.user?.id;
-      const profile = await userProfileModel.find({ user: userId });
+
+      const profile = await userProfileModel.findOne({ user: userId }).populate({
+        path: 'user',
+        select: '-password'
+      });
       if (!profile) {
-        return res.status(404).json(profile);
+        return res.status(404).json({profile});
       }
       res.status(200).json({profile});
     } catch (error) {
@@ -89,19 +93,19 @@ export const updateUserProfile = async (req, res) => {
   };
 
 
-// Get one User Profile by userProfileId
-export const getOneUserProfile = async (req, res) => {
-  try {
-    const userId = req.session?.user?.id || req?.user?.id;
-    const userProfileId = req.params.userProfileId;
+// // Get one User Profile by userProfileId
+// export const getOneUserProfile = async (req, res) => {
+//   try {
+//     const userId = req.session?.user?.id || req?.user?.id;
+//     const userProfileId = req.params.userProfileId;
 
-    const userProfile = await userProfileModel.findOne({ _id: userProfileId, user: userId });
-    if (!userProfile) {
-      return res.status(404).json(userProfile);
-    }
+//     const userProfile = await userProfileModel.findOne({ _id: userProfileId, user: userId });
+//     if (!userProfile) {
+//       return res.status(404).json(userProfile);
+//     }
     
-    res.status(200).json({ userProfile });
-  } catch (error) {
-    res.status(500).send({error});
-  }
-};
+//     res.status(200).json({ userProfile });
+//   } catch (error) {
+//     res.status(500).send({error});
+//   }
+// };
