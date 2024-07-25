@@ -11,19 +11,19 @@ export const createProject = async (req, res) => {
       return res.status(400).send(error.details[0].message);
     }
 
-    const userSessionId = req.session?.user?.id || req?.user?.id;   
-    const user = await userModel.findById(userSessionId);
+    const userId = req.session?.user?.id || req?.user?.id;   
+    const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
 
-    const project = await ProjectModel.create({ ...value, user: userSessionId });
+    const project = await ProjectModel.create({ ...value, user: userId });
 
     user.project.push(project._id)
 
     await user.save();
 
-    res.status(201).json({ project });
+    res.status(201).json({message: "Project Added"});
   } catch (error) {
     console.log(error);
   }
@@ -34,10 +34,10 @@ export const createProject = async (req, res) => {
 export const getAllProjects = async (req, res) => {
   try {
     //we are fetching Project that belongs to a particular user
-    const userSessionId = req.session?.user?.id || req?.user?.id;    
-    const allProject = await ProjectModel.find({ user: userSessionId });
+    const userId = req.session?.user?.id || req?.user?.id;    
+    const allProject = await ProjectModel.find({ user: userId });
     if (allProject.length == 0) {
-      return res.status(404).send("No Project added");
+      return res.status(404).json(allProject);
     }
     res.status(200).json({ Projects: allProject });
   } catch (error) {
@@ -45,6 +45,23 @@ export const getAllProjects = async (req, res) => {
   }
 };
 
+
+// Get one User Project by projectId
+export const getOneProject = async (req, res) => {
+  try {
+    const userId = req.session?.user?.id || req?.user?.id;
+    const projectId = req.params.projectId;
+
+    const project = await ProjectModel.findOne({ _id: projectId, user: userId });
+    if (!project) {
+      return res.status(404).json(project);
+    }
+    
+    res.status(200).json({ project });
+  } catch (error) {
+    res.status(500).send({error});
+  }
+};
 
 
 export const updateProject = async (req, res) => {
@@ -56,8 +73,8 @@ export const updateProject = async (req, res) => {
         return res.status(400).send(error.details[0].message);
       }
   
-      const userSessionId = req.session?.user?.id || req?.user?.id;      
-      const user = await userModel.findById(userSessionId);
+      const userId = req.session?.user?.id || req?.user?.id;      
+      const user = await userModel.findById(userId);
       if (!user) {
         return res.status(404).send("User not found");
       }
@@ -67,7 +84,7 @@ export const updateProject = async (req, res) => {
             return res.status(404).send("Project not found");
         }
   
-      res.status(200).json({ project });
+      res.status(200).json({message: "Project Updated"});
     } catch (error) {
       return res.status(500).json({error})
     }
@@ -78,8 +95,8 @@ export const updateProject = async (req, res) => {
     try {
      
   
-      const userSessionId = req.session?.user?.id || req?.user?.id;      
-      const user = await userModel.findById(userSessionId);
+      const userId = req.session?.user?.id || req?.user?.id;      
+      const user = await userModel.findById(userId);
       if (!user) {
         return res.status(404).send("User not found");
       }
@@ -91,7 +108,7 @@ export const updateProject = async (req, res) => {
   
         user.project.pull(req.params.id);
         await user.save();
-      res.status(200).json("Project deleted");
+      res.status(200).json({message:"Project deleted"});
     } catch (error) {
       return res.status(500).json({error})
     }

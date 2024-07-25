@@ -39,8 +39,6 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: process.env.Mongo_url
     })
-    
-
 }));
 
 app.get("/api/v1/health", (req, res) => {

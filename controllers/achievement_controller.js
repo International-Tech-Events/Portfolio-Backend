@@ -12,24 +12,26 @@ export const addAchievement = async (req, res) => {
     if (error) {
       return res.status(400).send(error.details[0].message)
     }
-    const userSessionId = req.session?.user?.id || req?.user?.id;
+    const userId = req.session?.user?.id || req?.user?.id;
 
-    const user = await userModel.findById(userSessionId);
+    const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).send('User not found');
     }
 
-    const achievement = await achievementModel.create({ ...value, user: userSessionId });
+    const achievement = await achievementModel.create({ ...value,
+      image: req.file.filename,
+       user: userId });
 
     user.achievement.push(achievement._id);
 
     await user.save();
 
     //return the achievement
-    res.status(201).json({ achievement })
+    res.status(201).json({message: "Achievement Added"})
 
   } catch (error) {
-    return res.status(500).send(error)
+    console.log(error);
   }
 }
 
@@ -38,40 +40,59 @@ export const addAchievement = async (req, res) => {
 export const getAllUserAchievement = async (req, res) => {
 
   try {
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const allachievements = await achievementModel.find({ user: userSessionId })
+    const userId = req.session?.user?.id || req?.user?.id;
+    const allachievements = await achievementModel.find({ user: userId })
     if (allachievements.length == 0) {
-      return res.status(404).send('No Achievement Added')
+      return res.status(200).json({achievement: allachievements})
     }
     res.status(200).json({ achievement: allachievements })
   } catch (error) {
-
+    return res.status(500).json({Error})
   }
 
 }
 
 
+// Get one User Achievement by achievementId
+export const getOneAchievement = async (req, res) => {
+  try {
+    const userId = req.session?.user?.id || req?.user?.id;
+    const achievementId = req.params.achievementId;
+
+    const achievement = await achievementModel.findOne({ _id: achievementId, user: userId });
+    if (!achievement) {
+      return res.status(200).json({Achievement: achievement});
+    }
+    
+    res.status(200).json({ achievement });
+  } catch (error) {
+    res.status(500).json({Error});
+  }
+};
+
 // Update an Achievement
 export const updateAchievement = async (req, res) => {
   try {
-    const { error, value } = achievementSchema.validate({ ...req.body });
+    const { error, value } = achievementSchema.validate({ ...req.body,
+      image:req.files.image[0].filename
+     });
 
     if (error) {
       return res.status(400).send(error.details[0].message);
     }
 
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const user = await userModel.findById(userSessionId);
+    const userId = req.session?.user?.id || req?.user?.id;
+    const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
 
     const achievement = await achievementModel.findByIdAndUpdate(req.params.id, value, { new: true });
     if (!achievement) {
-      return res.status(404).send("Achievement not found");
+      return res.status(404).send({message:"Achievement not found"});
     }
 
-    res.status(200).json({ achievement });
+    res.status(200).json("Achievement Updated");
   } catch (error) {
     return res.status(500).json({ error })
   }
@@ -81,8 +102,8 @@ export const updateAchievement = async (req, res) => {
 //   Delete Achievement
 export const deleteAchievement = async (req, res) => {
   try {
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const user = await userModel.findById(userSessionId);
+    const userId = req.session?.user?.id || req?.user?.id;
+    const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
@@ -95,7 +116,7 @@ export const deleteAchievement = async (req, res) => {
     user.achievement.pull(req.params.id);
     await user.save();
 
-    res.status(200).json("Achievement deleted");
+    res.status(200).json({message: "Achievement deleted"});
   } catch (error) {
     return res.status(500).json({ error })
   }

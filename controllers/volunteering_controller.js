@@ -11,22 +11,22 @@ export const addVolunteering = async (req, res) => {
       return res.status(400).send(error.details[0].message);
     }
 
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const user = await userModel.findById(userSessionId);
+    const userId = req.session?.user?.id || req?.user?.id;
+    const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
 
     const volunteering = await volunteeringModel.create({
       ...value,
-      user: userSessionId,
+      user: userId,
     });
 
     user.volunteering.push(volunteering._id);
 
     await user.save();
 
-    res.status(201).json({ volunteering });
+    res.status(201).json({message: "volunteering Added"});
   } catch (error) {
     console.log(error);
   }
@@ -36,10 +36,10 @@ export const addVolunteering = async (req, res) => {
 export const getAllUserVolunteering = async (req, res) => {
 
   try {
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const allvolunteering = await volunteeringModel.find({ user: userSessionId })
+    const userId = req.session?.user?.id || req?.user?.id;
+    const allvolunteering = await volunteeringModel.find({ user: userId })
     if (allvolunteering.length == 0) {
-      return res.status(404).send('No Volunteering Added')
+      return res.status(404).json({volunteering: allvolunteering})
     }
     res.status(200).json({ volunteering: allvolunteering })
   } catch (error) {
@@ -47,6 +47,26 @@ export const getAllUserVolunteering = async (req, res) => {
   }
 
 }
+
+
+// Get one User Volunteering by volunteeringId
+export const getOneVolunteering = async (req, res) => {
+  try {
+    const userId = req.session?.user?.id || req?.user?.id;
+    const volunteeringId = req.params.volunteeringId;
+
+    const volunteering = await volunteeringModel.findOne({ _id: volunteeringId, user: userId });
+    if (!volunteering) {
+      return res.status(200).json({volunteering});
+    }
+    
+    res.status(200).json({ volunteering });
+  } catch (error) {
+    res.status(500).send({error});
+  }
+};
+
+
 
 
 // Update Volunteering
@@ -58,8 +78,8 @@ export const updateVolunteering = async (req, res) => {
       return res.status(400).send(error.details[0].message);
     }
 
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const user = await userModel.findById(userSessionId);
+    const userId = req.session?.user?.id || req?.user?.id;
+    const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
@@ -73,7 +93,7 @@ export const updateVolunteering = async (req, res) => {
       return res.status(404).send("Volunteering not found");
     }
 
-    res.status(200).json({ volunteering });
+    res.status(200).json({message: "volunteering Updated"});
   } catch (error) {
     return res.status(500).json({ error });
   }
@@ -83,8 +103,8 @@ export const updateVolunteering = async (req, res) => {
 //   Delete Volunteering
 export const deleteVolunteering = async (req, res) => {
   try {
-    const userSessionId = req.session?.user?.id || req?.user?.id;
-    const user = await userModel.findById(userSessionId);
+    const userId = req.session?.user?.id || req?.user?.id;
+    const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
@@ -97,7 +117,7 @@ export const deleteVolunteering = async (req, res) => {
     user.volunteering.pull(req.params.id);
     await user.save();
 
-    res.status(200).json("Volunteering deleted");
+    res.status(200).json({message: "Volunteering deleted"});
   } catch (error) {
     return res.status(500).json({ error });
   }

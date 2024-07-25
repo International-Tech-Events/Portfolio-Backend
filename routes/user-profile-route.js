@@ -28,3 +28,5 @@ userProfileRouter.post(
 
     userProfileRouter.get('/users/userProfile', checkUserSession, getUserProfile);
   
+    // userProfileRouter.get('/users/userProfile/:userProfieId', checkUserSession, getOneUserProfile);
+
