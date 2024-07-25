@@ -169,7 +169,12 @@ export const login = async (req, res, next) => {
      // Return response
      res.status(201).json({
       message: 'User  logged in',
-      accessToken: token
+      accessToken: token,
+      user: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        userName: user.userName
+      }
     });
   } catch (error) {
      next(error)
